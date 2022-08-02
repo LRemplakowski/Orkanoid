@@ -1,4 +1,5 @@
 using Orkanoid.Game;
+using SunsetSystems.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,10 +7,13 @@ using UnityEngine;
 
 namespace Orkanoid.Core.Levels
 {
+    [RequireComponent(typeof(Tagger))]
     public class BrickGrid : MonoBehaviour
     {
         [SerializeField]
-        private int gridSizeX = 1, gridSizeY = 1;
+        private int _gridSizeX = 1, gridSizeY = 1;
+        public int GridWidth => _gridSizeX;
+        public int GridHeight => gridSizeY;
         [SerializeField]
         private IBrick[,] grid;
 
@@ -20,7 +24,7 @@ namespace Orkanoid.Core.Levels
 
         private void Awake()
         {
-            grid = new IBrick[gridSizeX, gridSizeY];
+            grid = new IBrick[_gridSizeX, gridSizeY];
             myGridComponent = GetComponent<Grid>();
         }
 
@@ -28,8 +32,8 @@ namespace Orkanoid.Core.Levels
         private void PopulateGridEmpty()
         {
             this.transform.DestroyChildrenImmediate();
-            grid = new IBrick[gridSizeX, gridSizeY];
-            for (int i = 0; i < gridSizeX; i++)
+            grid = new IBrick[_gridSizeX, gridSizeY];
+            for (int i = 0; i < _gridSizeX; i++)
             {
                 for (int j = 0; j < gridSizeY; j++)
                 {
@@ -38,20 +42,24 @@ namespace Orkanoid.Core.Levels
             }
         }
 
-        public void PlaceBrickInGrid(AbstractBrick brick, int x, int y)
+        public void PlaceBrickInGrid(IBrick brick, int x, int y)
         {
             if (grid == null)
-                grid = new IBrick[gridSizeX, gridSizeY];
+                grid = new IBrick[_gridSizeX, gridSizeY];
             try
             {
+                if (grid[x, y] != null)
+                    Destroy(grid[x, y].GetGameObject());
                 grid[x, y] = brick;
-                brick.transform.parent = this.transform;
-                brick.transform.localPosition = myGridComponent.GetCellCenterLocal(new Vector3Int(x, y));
+                brick.GetTransform().parent = this.transform;
+                Vector3 localPosition = myGridComponent.GetCellCenterLocal(new Vector3Int(x, y));
+                localPosition.z = -5;
+                brick.GetTransform().localPosition = localPosition;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 Debug.LogException(e);
-                Destroy(brick);
+                Destroy(brick.GetGameObject());
             }
         }
 

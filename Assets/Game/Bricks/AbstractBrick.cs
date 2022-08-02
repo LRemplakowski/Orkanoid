@@ -62,23 +62,27 @@ namespace Orkanoid.Game
             }
         }
 
-        public int GetHealthLeft()
+        public virtual int GetHealthLeft()
         {
             return maxHealth - hitsTaken;
         }
 
-        public int GetPointValue()
+        public virtual int GetPointValue()
         {
             return maxHealth * ScoreBase;
         }
 
-        public void TakeHit(int damage)
+        public virtual void TakeHit(int damage)
         {
             hitsTaken += damage;
             HitTaken?.Invoke(this);
             if (hitsTaken >= maxHealth)
                 BrickDestroyed?.Invoke(this);
         }
+
+        public Transform GetTransform() => transform;
+
+        public GameObject GetGameObject() => gameObject;
 
         protected abstract void OnHealthBelowZero(AbstractBrick brick);
 

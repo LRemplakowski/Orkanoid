@@ -526,6 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1707936056}
   - component: {fileID: 1707936055}
+  - component: {fileID: 1707936057}
   m_Layer: 0
   m_Name: Level Generator
   m_TagString: Untagged
@@ -545,6 +546,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02830cd31ccf45d43ad0093723dd0ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seed: 3
+  brickTemplates:
+  - {fileID: 4460603131052474348, guid: 5a0c2af61587864439917b5a08a8990d, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
 --- !u!4 &1707936056
 Transform:
   m_ObjectHideFlags: 0
@@ -560,3 +567,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1707936057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707936054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3f36d87db2ac447a3cb25339c61571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: LEVEL_GENERATOR

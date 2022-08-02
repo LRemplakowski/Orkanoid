@@ -1,4 +1,6 @@
-﻿namespace Orkanoid.Game
+﻿using UnityEngine;
+
+namespace Orkanoid.Game
 {
     public interface IBrick
     {
@@ -7,5 +9,9 @@
         int GetHealthLeft();
 
         int GetPointValue();
+
+        Transform GetTransform();
+
+        GameObject GetGameObject();
     }
 }
