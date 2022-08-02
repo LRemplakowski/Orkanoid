@@ -67,7 +67,7 @@ namespace Orkanoid.Game
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(new Vector3(0f, transform.position.y, -1f), movementConstraintBox);
         }
     }

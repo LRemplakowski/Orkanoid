@@ -37,13 +37,13 @@ namespace Orkanoid.Game
                     Debug.LogError(gameObject.name + " >> Collider2D not found! " + gameObject.GetInstanceID());
         }
 
-        private void OnEnable()
+        protected void OnEnable()
         {
             BrickDestroyed += OnHealthBelowZero;
             HitTaken += OnHitTaken;
         }
 
-        private void OnDisable()
+        protected void OnDisable()
         {
             BrickDestroyed -= OnHealthBelowZero;
             HitTaken -= OnHitTaken;

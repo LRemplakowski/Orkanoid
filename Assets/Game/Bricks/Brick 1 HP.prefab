@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f83d57c812a9a4ba9f15290e4ea571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealth: 1
   hitsTaken: 0
   sprites:
   - {fileID: -923761103, guid: 53bea009544659b459e0250d00933128, type: 3}
@@ -133,7 +133,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.35}
+  m_Size: {x: 1, y: 0.32}
   m_EdgeRadius: 0
 --- !u!114 &8939395318297120282
 MonoBehaviour:
