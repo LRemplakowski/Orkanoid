@@ -37,7 +37,7 @@ public static class Extensions
     public static bool TryFindFirstWithTag(this GameObject go, string tag, out GameObject result)
     {
         bool found = Tagger.tags.TryGetValue(tag, out List<GameObject> value);
-        result = value?[0];
+        result = value.Count > 0 ? value?[0] : null;
         return found;
     }
 
@@ -45,7 +45,8 @@ public static class Extensions
     {
         T result = null;
         if (go.TryFindFirstWithTag(tag, out GameObject found))
-            result = found.GetComponent<T>();
+            if (found)
+                result = found.GetComponent<T>();
         return result;
     }
 
@@ -73,7 +74,7 @@ public static class Extensions
     public static bool TryFindFirstWithTag(this Component co, string tag, out GameObject result)
     {
         bool found = Tagger.tags.TryGetValue(tag, out List<GameObject> value);
-        result = value?[0];
+        result = value.Count > 0 ? value?[0] : null;
         return found;
     }
 
@@ -81,7 +82,8 @@ public static class Extensions
     {
         T result = null;
         if (co.TryFindFirstWithTag(tag, out GameObject found))
-            result = found.GetComponent<T>();
+            if (found)
+                result = found.GetComponent<T>();
         return result;
     }
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Orkanoid.Level.Bricks
+namespace Orkanoid.Game
 {
     public class DefaultBrick : AbstractBrick
     {
@@ -17,7 +17,7 @@ namespace Orkanoid.Level.Bricks
         {
             try
             {
-                spriteRenderer.sprite = sprites[hitsTaken < maxHealth ? hitsTaken : maxHealth];
+                spriteRenderer.sprite = sprites[hitsTaken < maxHealth - 1 ? hitsTaken : maxHealth - 1];
             }
             catch (ArgumentOutOfRangeException e)
             {

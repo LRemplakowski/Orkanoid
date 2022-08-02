@@ -5,5 +5,6 @@
         public const string BRICK = "BRICK";
 
         public const string GAME_MANAGER = "GAME_MANAGER";
+        public const string PADDLE = "PADDLE";
     }
 }

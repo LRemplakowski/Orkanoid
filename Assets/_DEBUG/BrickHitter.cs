@@ -4,14 +4,17 @@ using UnityEngine;
 
 namespace Orkanoid.DebugHelper
 {
-    public class BrickKiller : MonoBehaviour
+    public class BrickHitter : MonoBehaviour
     {
-        public void KillRandomBrick()
+        [SerializeField]
+        private int damage = 1;
+
+        public void HitRandomBrick()
         {
-            Debug.Log("DIE YOU NASTY BRICK!");
+            Debug.Log("TAKE THAT YOU BRICK!");
             AbstractBrick brick = this.FindFirstComponentWithTag<AbstractBrick>(TagConstants.BRICK);
             if (brick)
-                brick.TakeHit(brick.GetHealthLeft());
+                brick.TakeHit(damage);
         }
     }
 }

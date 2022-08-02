@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Orkanoid.Level.Bricks
+namespace Orkanoid.Game
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Collider2D))]

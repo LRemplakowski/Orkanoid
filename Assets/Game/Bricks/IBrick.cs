@@ -1,4 +1,4 @@
-﻿namespace Orkanoid.Level.Bricks
+﻿namespace Orkanoid.Game
 {
     public interface IBrick
     {

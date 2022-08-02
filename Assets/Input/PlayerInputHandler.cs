@@ -1,3 +1,4 @@
+using SunsetSystems.Utils;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,16 @@ namespace Orkanoid.Core
     {
         public delegate void MovementVectorChangedHandler(Vector2 movementVector);
         public static event MovementVectorChangedHandler MovementVectorChanged;
+
+        private GameManager gameManager;
+
+        private void Start()
+        {
+            if (!gameManager)
+                gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
+            if (!gameManager)
+                Debug.LogError(gameObject.name + " >> no Game Manager found in scene! " + gameObject.GetInstanceID());
+        }
 
         public void OnMovePaddle(InputAction.CallbackContext context)
         {
@@ -19,7 +30,7 @@ namespace Orkanoid.Core
         {
             if (!context.performed)
                 return;
-            Debug.Log("Launch ball");
+            gameManager.StartGame();
         }
 
         public void OnPauseGame(InputAction.CallbackContext context)
