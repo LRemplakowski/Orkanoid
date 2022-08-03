@@ -818,7 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridSizeX: 14
-  gridSizeY: 21
+  gridSizeY: 14
   emptyBrick: {fileID: 4460603131052474348, guid: 5a0c2af61587864439917b5a08a8990d, type: 3}
   myGridComponent: {fileID: 606952530}
 --- !u!114 &606952532
@@ -1436,9 +1436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02830cd31ccf45d43ad0093723dd0ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 3
-  mirrorAxis: 3
+  seed: 666
+  mirrorAxis: 2
   randomizeLevelSymmetry: 0
+  brickDensity: 0.508
   brickTemplates:
   - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
   - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
