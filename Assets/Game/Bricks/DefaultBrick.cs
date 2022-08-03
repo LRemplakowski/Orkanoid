@@ -26,5 +26,7 @@ namespace Orkanoid.Game
             if (brickHit)
                 AudioSource.PlayClipAtPoint(brickHit, transform.position, 1.0f);
         }
+
+        public sealed override BrickType GetBrickType() => BrickType.Default;
     }
 }

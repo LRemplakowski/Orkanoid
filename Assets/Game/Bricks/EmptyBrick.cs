@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Orkanoid.Game
 {
-    public class EmptyBrick : DefaultBrick
+    public class EmptyBrick : AbstractBrick
     {
         protected override void Awake()
         {
@@ -27,5 +27,7 @@ namespace Orkanoid.Game
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(this.transform.position, spriteRenderer.sprite.bounds.size);
         }
+
+        public sealed override BrickType GetBrickType() => BrickType.Empty;
     }
 }

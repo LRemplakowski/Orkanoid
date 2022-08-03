@@ -84,6 +84,8 @@ namespace Orkanoid.Game
 
         public GameObject GetGameObject() => gameObject;
 
+        public abstract BrickType GetBrickType();
+
         protected abstract void OnHealthBelowZero(AbstractBrick brick);
 
         protected abstract void OnHitTaken(AbstractBrick brick);

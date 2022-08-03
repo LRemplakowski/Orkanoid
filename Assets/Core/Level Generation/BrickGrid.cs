@@ -1,8 +1,6 @@
 using Orkanoid.Game;
 using SunsetSystems.Utils;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Orkanoid.Core.Levels
@@ -61,11 +59,6 @@ namespace Orkanoid.Core.Levels
                 Debug.LogException(e);
                 Destroy(brick.GetGameObject());
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-
         }
     }
 }

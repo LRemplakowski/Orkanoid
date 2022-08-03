@@ -1,6 +1,8 @@
 ﻿using SunsetSystems.Utils;
+using SunsetSystems.Utils.Threading;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public static class Extensions
@@ -100,6 +102,19 @@ public static class Extensions
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             UnityEngine.Object.DestroyImmediate(transform.GetChild(i).gameObject);
+        }
+    }
+
+    public static void DispatchTask(this Task task, Action fn)
+    {
+        bool found = Tagger.tags.TryGetValue(TagConstants.UNITY_DISPATCHER, out List<GameObject> value);
+        if (found)
+        {
+            value[0].GetComponent<Dispatcher>().Invoke(fn);
+        }
+        else
+        {
+            throw new KeyNotFoundException("Cannot find Dispatcher instance!");
         }
     }
 }

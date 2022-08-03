@@ -13,5 +13,7 @@ namespace Orkanoid.Game
         Transform GetTransform();
 
         GameObject GetGameObject();
+
+        BrickType GetBrickType();
     }
 }
