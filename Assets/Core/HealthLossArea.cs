@@ -1,17 +1,23 @@
 using Orkanoid.Game;
-using System.Collections;
-using System.Collections.Generic;
+using SunsetSystems.Utils;
 using UnityEngine;
 
 namespace Orkanoid.Core
 {
     public class HealthLossArea : MonoBehaviour
     {
+        private GameManager gameManager;
+
+        private void Start()
+        {
+            gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.TryGetComponent(out Ball ball))
+            if (collision.TryGetComponent(out Ball _))
             {
-                Debug.Log("YOU LOST A LIFE!");
+                gameManager.LoseLife();
             }
         }
     }

@@ -8,12 +8,13 @@ namespace Orkanoid.Game
         [SerializeField]
         protected AudioClip brickHit;
 
-        protected override void OnHealthBelowZero(AbstractBrick brick)
+        protected override void OnHealthBelowZero(IBrick brick)
         {
-            Destroy(brick.gameObject);
+            gameManager.AddPoints(brick.GetPointValue());
+            brickPool.ReturnToPool(brick);
         }
 
-        protected override void OnHitTaken(AbstractBrick brick)
+        protected override void OnHitTaken(IBrick brick)
         {
             try
             {

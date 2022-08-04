@@ -10,11 +10,11 @@ namespace Orkanoid.Game
         {
         }
 
-        protected override void OnHealthBelowZero(AbstractBrick brick)
+        protected override void OnHealthBelowZero(IBrick brick)
         {
         }
 
-        protected override void OnHitTaken(AbstractBrick brick)
+        protected override void OnHitTaken(IBrick brick)
         {
         }
 

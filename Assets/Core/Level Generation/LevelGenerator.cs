@@ -32,8 +32,9 @@ namespace Orkanoid.Core.Levels
             random = new System.Random(seed);
             brickGrid = this.FindFirstComponentWithTag<BrickGrid>(TagConstants.BRICK_GRID);
             BrickPool brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
-            bool[][] levelPattern = PatternProvider.GetNoisePattern(random, brickGrid.GridWidth, brickGrid.GridHeight, mirrorAxis, brickDensity);
-            GridTemplate gridTemplate = new GridTemplate.GridTemplateBuilder(levelPattern, brickTemplates, emptyBrick, random, brickPool)
+            bool[][] levelPattern = new bool[brickGrid.GridHeight][];
+            levelPattern = BuildLevelPatternRecursive(levelPattern, brickDensity);
+            GridTemplate gridTemplate = new GridTemplate.GridTemplateBuilder(levelPattern, new(brickTemplates), emptyBrick, random, brickPool)
                 .SetSymmetryAxis(mirrorAxis)
                 .Build();
             for (int i = 0; i < brickGrid.GridWidth; i++)
@@ -44,6 +45,19 @@ namespace Orkanoid.Core.Levels
                     Debug.Log("Brick type at coordinates [" + i + ", " + j + "] = " + brick.GetBrickType().ToString());
                     brickGrid.PlaceBrickInGrid(gridTemplate.Get(i, j), i, j);
                 }
+            }
+        }
+
+        private bool[][] BuildLevelPatternRecursive(bool[][] levelPattern, float density)
+        {
+            levelPattern = PatternProvider.GetNoisePattern(random, brickGrid.GridWidth, brickGrid.GridHeight, mirrorAxis, density);
+            if (levelPattern.All(rows => rows.All(fields => fields == false)))
+            {
+                return BuildLevelPatternRecursive(levelPattern, density + 0.1f);
+            }
+            else
+            {
+                return levelPattern;
             }
         }
 
@@ -64,14 +78,14 @@ namespace Orkanoid.Core.Levels
             public class GridTemplateBuilder
             {
                 private bool[][] perlinPattern;
-                private List<AbstractBrick> brickTemplates;
-                private AbstractBrick emptyBrick;
+                private List<IBrick> brickTemplates;
+                private IBrick emptyBrick;
                 private MirrorAxis mirrorAxis = MirrorAxis.None;
 
                 private System.Random seededRandom;
                 private BrickPool brickPool;
 
-                public GridTemplateBuilder(bool[][] perlinPattern, List<AbstractBrick> brickTemplates, AbstractBrick emptyBrick, System.Random seededRandom, BrickPool brickPool)
+                public GridTemplateBuilder(bool[][] perlinPattern, List<IBrick> brickTemplates, IBrick emptyBrick, System.Random seededRandom, BrickPool brickPool)
                 {
                     this.perlinPattern = perlinPattern;
                     this.brickTemplates = brickTemplates;
@@ -86,7 +100,7 @@ namespace Orkanoid.Core.Levels
                     return this;
                 }
 
-                public GridTemplateBuilder SetBrickTemplates(List<AbstractBrick> brickTemplates)
+                public GridTemplateBuilder SetBrickTemplates(List<IBrick> brickTemplates)
                 {
                     this.brickTemplates = brickTemplates;
                     return this;
@@ -158,17 +172,17 @@ namespace Orkanoid.Core.Levels
 
             private class BrickRow
             {
-                private readonly AbstractBrick[] _bricks;
-                public AbstractBrick[] Bricks => _bricks;
+                private readonly IBrick[] _bricks;
+                public IBrick[] Bricks => _bricks;
 
-                private BrickRow(AbstractBrick[] _bricks)
+                private BrickRow(IBrick[] _bricks)
                 {
                     this._bricks = _bricks;
                 }
 
                 public BrickRow(BrickRow row, BrickPool brickPool)
                 {
-                    _bricks = new AbstractBrick[row.Bricks.Length];
+                    _bricks = new IBrick[row.Bricks.Length];
                     for (int i = 0; i < _bricks.Length; i++)
                     {
                         _bricks[i] = brickPool.GetBrickFromPool(row.Bricks[i]);
@@ -178,14 +192,14 @@ namespace Orkanoid.Core.Levels
                 public class BrickRowBuilder
                 {
                     private bool[] rowPattern;
-                    private List<AbstractBrick> brickTemplates;
-                    private AbstractBrick emptyBrick;
+                    private List<IBrick> brickTemplates;
+                    private IBrick emptyBrick;
                     private MirrorAxis mirrorAxis = MirrorAxis.None;
 
                     private System.Random seededRandom;
                     private BrickPool brickPool;
 
-                    public BrickRowBuilder(bool[] rowPattern, List<AbstractBrick> brickTemplates, AbstractBrick emptyBrick, System.Random seededRandom, BrickPool brickPool)
+                    public BrickRowBuilder(bool[] rowPattern, List<IBrick> brickTemplates, IBrick emptyBrick, System.Random seededRandom, BrickPool brickPool)
                     {
                         this.rowPattern = rowPattern;
                         this.brickTemplates = brickTemplates;
@@ -200,7 +214,7 @@ namespace Orkanoid.Core.Levels
                         return this;
                     }
 
-                    public BrickRowBuilder SetBrickTemplates(List<AbstractBrick> brickTemplates)
+                    public BrickRowBuilder SetBrickTemplates(List<IBrick> brickTemplates)
                     {
                         this.brickTemplates = brickTemplates;
                         return this;
@@ -232,18 +246,18 @@ namespace Orkanoid.Core.Levels
 
                     public BrickRow Build()
                     {
-                        AbstractBrick[] bricks = new AbstractBrick[rowPattern.Length];
+                        IBrick[] bricks = new IBrick[rowPattern.Length];
                         if (mirrorAxis.Equals(MirrorAxis.Y) || mirrorAxis.Equals(MirrorAxis.XY))
                         {
                             for (int i = 0; i < (bricks.Length - bricks.Length % 2) / 2; i++)
                             {
-                                AbstractBrick template = rowPattern[i] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
+                                IBrick template = rowPattern[i] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
                                 bricks[i] = GetBrick(template);
                                 bricks[bricks.Length - 1 - i] = GetBrick(template);
                             }
                             if (bricks.Length % 2 == 1)
                             {
-                                AbstractBrick template = rowPattern[(rowPattern.Length - 1) / 2] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
+                                IBrick template = rowPattern[(rowPattern.Length - 1) / 2] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
                                 bricks[(bricks.Length - 1) / 2] = GetBrick(template);
                             }
                         }
@@ -251,13 +265,13 @@ namespace Orkanoid.Core.Levels
                         {
                             for (int i = 0; i < bricks.Length; i++)
                             {
-                                AbstractBrick template = rowPattern[i] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
+                                IBrick template = rowPattern[i] ? brickTemplates[seededRandom.Next(0, brickTemplates.Count)] : emptyBrick;
                                 bricks[i] = GetBrick(template);
                             }
                         }
                         return new BrickRow(bricks);
 
-                        AbstractBrick GetBrick(AbstractBrick template)
+                        IBrick GetBrick(IBrick template)
                         {
                             return brickPool.GetBrickFromPool(template);
                         }

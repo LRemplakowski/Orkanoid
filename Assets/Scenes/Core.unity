@@ -223,7 +223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &71121398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -663,8 +663,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17dbc6fac0389f4d9b7994543e28f62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentScore: 0
+  _currentLives: 0
   _gameScoreBase: 100
-  _hasGameStarted: 0
+  <HasGameStarted>k__BackingField: 0
+  <IsGamePaused>k__BackingField: 0
 --- !u!114 &428126219
 MonoBehaviour:
   m_ObjectHideFlags: 0

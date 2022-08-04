@@ -1,5 +1,6 @@
 using Orkanoid.Core;
 using SunsetSystems.Utils;
+using System;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -15,6 +16,8 @@ namespace Orkanoid.Game
 
         [SerializeField]
         private float launchForceMultiplier = 1.0f;
+        [SerializeField]
+        private int damage = 1;
 
         private void Awake()
         {
@@ -27,11 +30,18 @@ namespace Orkanoid.Game
         private void OnEnable()
         {
             GameManager.GameStarted += LaunchBall;
+            GameManager.GameStopped += LockToPaddle;
         }
 
         private void OnDisable()
         {
             GameManager.GameStarted -= LaunchBall;
+            GameManager.GameStopped -= LockToPaddle;
+        }
+
+        private void LockToPaddle()
+        {
+            lockToPaddle = true;
         }
 
         private void Start()
@@ -44,6 +54,14 @@ namespace Orkanoid.Game
                 paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
             if (!paddle)
                 Debug.LogError(gameObject.name + " >> Paddle object not found! " + gameObject.GetInstanceID());
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out IBrick brick))
+            {
+                brick.TakeHit(damage);
+            }
         }
 
         public void LaunchBall()

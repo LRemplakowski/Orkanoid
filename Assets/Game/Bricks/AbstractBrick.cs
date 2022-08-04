@@ -20,7 +20,8 @@ namespace Orkanoid.Game
         [SerializeField]
         protected Collider2D brickCollider;
 
-        private int ScoreBase => this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER).GameScoreBase;
+        protected static BrickPool brickPool;
+        protected static GameManager gameManager;
 
         private delegate void BrickDestroyedHandler(AbstractBrick brick);
         private event BrickDestroyedHandler BrickDestroyed;
@@ -60,6 +61,10 @@ namespace Orkanoid.Game
                 Debug.LogException(e);
                 spriteRenderer.sprite = Sprite.Create(Texture2D.blackTexture, new(), Vector2.zero);
             }
+            if (!brickPool)
+                brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
+            if (!gameManager)
+                gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
         }
 
         public virtual int GetHealthLeft()
@@ -69,7 +74,7 @@ namespace Orkanoid.Game
 
         public virtual int GetPointValue()
         {
-            return maxHealth * ScoreBase;
+            return maxHealth;
         }
 
         public virtual void TakeHit(int damage)
@@ -86,8 +91,8 @@ namespace Orkanoid.Game
 
         public abstract BrickType GetBrickType();
 
-        protected abstract void OnHealthBelowZero(AbstractBrick brick);
+        protected abstract void OnHealthBelowZero(IBrick brick);
 
-        protected abstract void OnHitTaken(AbstractBrick brick);
+        protected abstract void OnHitTaken(IBrick brick);
     }
 }
