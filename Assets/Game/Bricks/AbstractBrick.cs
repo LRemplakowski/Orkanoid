@@ -14,8 +14,6 @@ namespace Orkanoid.Game
         [SerializeField]
         protected int maxHealth, hitsTaken = 0;
         [SerializeField]
-        protected List<Sprite> sprites = new();
-        [SerializeField]
         protected SpriteRenderer spriteRenderer;
         [SerializeField]
         protected Collider2D brickCollider;
@@ -52,15 +50,6 @@ namespace Orkanoid.Game
 
         protected virtual void Start()
         {
-            try
-            {
-                spriteRenderer.sprite = sprites[hitsTaken];
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Debug.LogException(e);
-                spriteRenderer.sprite = Sprite.Create(Texture2D.blackTexture, new(), Vector2.zero);
-            }
             if (!brickPool)
                 brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
             if (!gameManager)

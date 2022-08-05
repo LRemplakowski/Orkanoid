@@ -1,6 +1,6 @@
-using Orkanoid.Game;
+using Orkanoid.Core.Levels;
 using SunsetSystems.Utils;
-using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Orkanoid.Core
@@ -36,6 +36,20 @@ namespace Orkanoid.Core
                 LifeCountChanged?.Invoke(_currentLives);
             }
         }
+        [SerializeField]
+        private int _currentLevel = 0;
+        public int CurrentLevel
+        {
+            get
+            {
+                return _currentLevel;
+            }
+            private set
+            {
+                _currentLevel = value;
+                LevelChanged?.Invoke(_currentLevel);
+            }
+        }
 
         [SerializeField]
         private int gameScoreBase = 100;
@@ -63,10 +77,18 @@ namespace Orkanoid.Core
         public delegate void LifeCountChangedHandler(int currentLives);
         public static event LifeCountChangedHandler LifeCountChanged;
 
+        public delegate void LevelChangedHandler(int currentLevel);
+        public static event LevelChangedHandler LevelChanged;
+
+        [SerializeField]
+        private LevelLoader levelLoader;
+
         private void Start()
         {
             ScoreChanged?.Invoke(_currentScore);
             LifeCountChanged?.Invoke(_currentLives);
+            if (!levelLoader)
+                levelLoader = this.FindFirstComponentWithTag<LevelLoader>(TagConstants.LEVEL_LOADER);
         }
 
         public void StartGame()
@@ -105,6 +127,18 @@ namespace Orkanoid.Core
         public void AddPoints(int pointValue)
         {
             CurrentScore = _currentScore + (gameScoreBase * pointValue);
+        }
+
+        public async Task NextLevel()
+        {
+            await NextLevel(CurrentLevel + 1);
+        }
+
+        public async Task NextLevel(int levelIndex)
+        {
+            CurrentLevel = levelIndex;
+            StopGame();
+            await levelLoader.NextLevel(CurrentLevel);
         }
 
         private void GameOver()

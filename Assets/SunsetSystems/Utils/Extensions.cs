@@ -104,17 +104,4 @@ public static class Extensions
             UnityEngine.Object.DestroyImmediate(transform.GetChild(i).gameObject);
         }
     }
-
-    public static void DispatchTask(this Task task, Action fn)
-    {
-        bool found = Tagger.tags.TryGetValue(TagConstants.UNITY_DISPATCHER, out List<GameObject> value);
-        if (found)
-        {
-            value[0].GetComponent<Dispatcher>().Invoke(fn);
-        }
-        else
-        {
-            throw new KeyNotFoundException("Cannot find Dispatcher instance!");
-        }
-    }
 }

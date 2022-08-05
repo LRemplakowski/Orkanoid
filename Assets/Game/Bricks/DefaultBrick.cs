@@ -16,14 +16,6 @@ namespace Orkanoid.Game
 
         protected override void OnHitTaken(IBrick brick)
         {
-            try
-            {
-                spriteRenderer.sprite = sprites[hitsTaken < maxHealth - 1 ? hitsTaken : maxHealth - 1];
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Debug.LogException(e);
-            }
             if (brickHit)
                 AudioSource.PlayClipAtPoint(brickHit, transform.position, 1.0f);
         }

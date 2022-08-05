@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 129076237, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_Name
       value: Empty Brick Variant
@@ -100,7 +104,6 @@ MonoBehaviour:
   sprites: []
   spriteRenderer: {fileID: 7084405552651031263}
   brickCollider: {fileID: 7084405552651031260}
-  brickHit: {fileID: 8300000, guid: 34d5bb9abb547594884e454ca1b839d1, type: 3}
 --- !u!61 &7084405552651031260 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 8939395318297120285, guid: 2930dac728f13084094973c364dda94f, type: 3}

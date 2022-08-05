@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SunsetSystems.Utils.Threading
 {
     [RequireComponent(typeof(Tagger))]
-    public class Dispatcher : MonoBehaviour
+    public class Dispatcher : Singleton<Dispatcher>
     {
         private readonly List<Action> pending = new();
 

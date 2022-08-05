@@ -18,6 +18,8 @@ namespace Orkanoid.Game
         private float launchForceMultiplier = 1.0f;
         [SerializeField]
         private int damage = 1;
+        [SerializeField]
+        private AudioClip bounce;
 
         private void Awake()
         {
@@ -85,7 +87,7 @@ namespace Orkanoid.Game
         {
             if (lockToPaddle)
             {
-                myRigidbody.MovePosition(paddle.BallHookPointPosition);
+                transform.position = paddle.BallHookPointPosition;
             }
         }
     }
