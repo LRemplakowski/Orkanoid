@@ -15,5 +15,9 @@ namespace Orkanoid.Game
         GameObject GetGameObject();
 
         BrickType GetBrickType();
+
+        void ResetBrick();
+
+        string GetBrickID();
     }
 }

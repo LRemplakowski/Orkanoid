@@ -5,6 +5,7 @@
         public const string BRICK = "BRICK";
         public const string PADDLE = "PADDLE";
         public const string BALL = "BALL";
+        public const string PLAY_SPACE = "PLAY_SPACE";
 
         public const string GAME_MANAGER = "GAME_MANAGER";
         public const string BRICK_GRID = "BRICK_GRID";

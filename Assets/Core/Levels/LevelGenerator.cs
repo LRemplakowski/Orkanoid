@@ -36,34 +36,36 @@ namespace Orkanoid.Core.Levels
 
         public async Task GenerateLevel(int seed, MirrorAxis mirrorAxis)
         {
-            await Task.Run(() =>
+            int width = 0, height = 0;
+            Dispatcher.Instance.Invoke(() =>
+            {
+                EnsureDependencies();
+                width = brickGrid.GridWidth;
+                height = brickGrid.GridHeight;
+            });
+            await UnityAwaiters.NextFrame();
+            await Task.Run(async () =>
             {
                 System.Random random = new(seed);
                 if (randomizeLevelSymmetry)
                     mirrorAxis = (MirrorAxis)random.Next(Enum.GetValues(typeof(MirrorAxis)).Length);
-                Dispatcher.Instance.Invoke(EnsureDependencies);
-                bool[][] levelPattern = null;
-                Dispatcher.Instance.Invoke(async () =>
-                {
-                    levelPattern = new bool[brickGrid.GridHeight][];
-                    levelPattern = BuildLevelPatternRecursive(levelPattern, brickDensity, random, brickGrid);
-                    await Task.Yield();
-                });
+                bool[][] levelPattern = new bool[height][];
+                levelPattern = await BuildLevelPatternRecursive(levelPattern, brickDensity, width, height, random);
                 GridTemplate gridTemplate = null;
-                Dispatcher.Instance.Invoke(() =>
+                Dispatcher.Instance.Invoke(async () =>
                 {
                     gridTemplate = new GridTemplate.GridTemplateBuilder(levelPattern, new(brickTemplates), emptyBrick, random, brickPool)
                         .SetSymmetryAxis(mirrorAxis)
                         .Build();
+                    await UnityAwaiters.NextFrame();
                 });
                 Dispatcher.Instance.Invoke(() =>
                 {
-                    for (int i = 0; i < brickGrid.GridWidth; i++)
+                    for (int i = 0; i < width; i++)
                     {
-                        for (int j = 0; j < brickGrid.GridHeight; j++)
+                        for (int j = 0; j < height; j++)
                         {
                             IBrick brick = gridTemplate.Get(i, j);
-                            Debug.Log("Brick type at coordinates [" + i + ", " + j + "] = " + brick.GetBrickType().ToString());
                             brickGrid.PlaceBrickInGrid(gridTemplate.Get(i, j), i, j);
                         }
                     }
@@ -78,12 +80,12 @@ namespace Orkanoid.Core.Levels
                     brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
             }
 
-            bool[][] BuildLevelPatternRecursive(bool[][] levelPattern, float density, System.Random random, BrickGrid brickGrid)
+            async Task<bool[][]> BuildLevelPatternRecursive(bool[][] levelPattern, float density, int width, int height, System.Random random)
             {
-                levelPattern = PatternProvider.GetNoisePattern(random, brickGrid.GridWidth, brickGrid.GridHeight, defaultMirrorAxis, density);
+                levelPattern = await PatternProvider.GetNoisePattern(random, width, height, defaultMirrorAxis, density);
                 if (levelPattern.All(rows => rows.All(fields => fields == false)))
                 {
-                    return BuildLevelPatternRecursive(levelPattern, density + 0.1f, random, brickGrid);
+                    return await BuildLevelPatternRecursive(levelPattern, density + 0.1f, width, height, random);
                 }
                 else
                 {

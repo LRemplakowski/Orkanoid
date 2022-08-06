@@ -12,6 +12,9 @@ namespace Orkanoid.Game
     public abstract class AbstractBrick : MonoBehaviour, IBrick
     {
         [SerializeField]
+        private string ID = "BRICK";
+
+        [SerializeField]
         protected int maxHealth, hitsTaken = 0;
         [SerializeField]
         protected SpriteRenderer spriteRenderer;
@@ -21,10 +24,10 @@ namespace Orkanoid.Game
         protected static BrickPool brickPool;
         protected static GameManager gameManager;
 
-        private delegate void BrickDestroyedHandler(AbstractBrick brick);
-        private event BrickDestroyedHandler BrickDestroyed;
-        private delegate void HitTakenHandler(AbstractBrick brick);
-        private event HitTakenHandler HitTaken;
+        public delegate void BrickDestroyedHandler(AbstractBrick brick);
+        public event BrickDestroyedHandler BrickDestroyed;
+        public delegate void HitTakenHandler(AbstractBrick brick);
+        public event HitTakenHandler HitTaken;
 
         protected virtual void Awake()
         {
@@ -83,5 +86,15 @@ namespace Orkanoid.Game
         protected abstract void OnHealthBelowZero(IBrick brick);
 
         protected abstract void OnHitTaken(IBrick brick);
+
+        public virtual void ResetBrick()
+        {
+            hitsTaken = 0;
+        }
+
+        public string GetBrickID()
+        {
+            return ID;
+        }
     }
 }

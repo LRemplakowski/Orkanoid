@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 129076238}
   - component: {fileID: 129076239}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Orca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 8939395318297120285}
   - component: {fileID: 8939395318297120282}
   - component: {fileID: 754213922}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brick 1 HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8939395318297120272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -185,9 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f83d57c812a9a4ba9f15290e4ea571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 1hp
   maxHealth: 1
   hitsTaken: 0
-  sprites: []
   spriteRenderer: {fileID: 8939395318297120286}
   brickCollider: {fileID: 8939395318297120285}
   brickHit: {fileID: 8300000, guid: 34d5bb9abb547594884e454ca1b839d1, type: 3}

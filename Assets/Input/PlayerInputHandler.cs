@@ -34,7 +34,9 @@ namespace Orkanoid.Core
             if (!context.performed)
                 return;
             if (!gameManager.HasGameStarted)
+            {
                 gameManager.StartGame();
+            }
         }
 
         public void OnSwitchPauseState(InputAction.CallbackContext context)

@@ -12,6 +12,10 @@ PrefabInstance:
       value: Brick 3 HP Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: ID
+      value: 3hp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: maxHealth
       value: 3
       objectReference: {fileID: 0}

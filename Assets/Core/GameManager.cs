@@ -87,6 +87,16 @@ namespace Orkanoid.Core
         [SerializeField]
         private FadePanel fadePanel;
 
+        private void OnEnable()
+        {
+            BrickGrid.AllBricksDestroyed += OnAllBricksDestroyed;
+        }
+
+        private void OnDisable()
+        {
+            BrickGrid.AllBricksDestroyed -= OnAllBricksDestroyed;
+        }
+
         private void Start()
         {
             ResetGame();
@@ -146,6 +156,11 @@ namespace Orkanoid.Core
             }
         }
 
+        private async void OnAllBricksDestroyed()
+        {
+            await NextLevel();
+        }
+
         public async Task NextLevel()
         {
             await NextLevel(CurrentLevel + 1, null);
@@ -170,7 +185,6 @@ namespace Orkanoid.Core
             actionOnFade?.Invoke();
             await levelLoader.NextLevel(CurrentLevel);
             await fadePanel.FadeIn();
-            ResumeGame();
 
             void EnsureDependencies()
             {
