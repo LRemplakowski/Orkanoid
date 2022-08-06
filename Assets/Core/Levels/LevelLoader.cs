@@ -20,10 +20,8 @@ namespace Orkanoid.Core.Levels
         public async Task NextLevel(int seed)
         {
             EnsureDependencies();
-            await fadePanel.FadeOut(.5f);
             ClearPreviousLevel();
             await levelGenerator.GenerateLevel(seed);
-            await fadePanel.FadeIn(.5f);
 
             void ClearPreviousLevel()
             {

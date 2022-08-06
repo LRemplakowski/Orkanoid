@@ -1,5 +1,7 @@
 using Orkanoid.Core.Levels;
+using Orkanoid.UI;
 using SunsetSystems.Utils;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -82,13 +84,18 @@ namespace Orkanoid.Core
 
         [SerializeField]
         private LevelLoader levelLoader;
+        [SerializeField]
+        private FadePanel fadePanel;
 
         private void Start()
         {
+            ResetGame();
+        }
+
+        public void ResetGame()
+        {
             ScoreChanged?.Invoke(_currentScore);
             LifeCountChanged?.Invoke(_currentLives);
-            if (!levelLoader)
-                levelLoader = this.FindFirstComponentWithTag<LevelLoader>(TagConstants.LEVEL_LOADER);
         }
 
         public void StartGame()
@@ -126,19 +133,52 @@ namespace Orkanoid.Core
 
         public void AddPoints(int pointValue)
         {
-            CurrentScore = _currentScore + (gameScoreBase * pointValue);
+            // Let's say we win a game on integer overflow in score.
+            // Can change this to long overflow if needed.
+            try
+            {
+                CurrentScore = checked(_currentScore + (gameScoreBase * pointValue));
+            }
+            catch (OverflowException)
+            {
+                CurrentScore = int.MaxValue;
+                GameOver();
+            }
         }
 
         public async Task NextLevel()
         {
-            await NextLevel(CurrentLevel + 1);
+            await NextLevel(CurrentLevel + 1, null);
+        }
+
+        public async Task NextLevel(Action actionOnFade)
+        {
+            await NextLevel(CurrentLevel + 1, actionOnFade);
         }
 
         public async Task NextLevel(int levelIndex)
         {
+            await NextLevel(levelIndex, null);
+        }
+
+        public async Task NextLevel(int levelIndex, Action actionOnFade)
+        {
+            EnsureDependencies();
             CurrentLevel = levelIndex;
             StopGame();
+            await fadePanel.FadeOut();
+            actionOnFade?.Invoke();
             await levelLoader.NextLevel(CurrentLevel);
+            await fadePanel.FadeIn();
+            ResumeGame();
+
+            void EnsureDependencies()
+            {
+                if (!levelLoader)
+                    levelLoader = this.FindFirstComponentWithTag<LevelLoader>(TagConstants.LEVEL_LOADER);
+                if (!fadePanel)
+                    fadePanel = this.FindFirstComponentWithTag<FadePanel>(TagConstants.FADE_PANEL);
+            }
         }
 
         private void GameOver()

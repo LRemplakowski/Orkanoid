@@ -19,7 +19,9 @@ namespace Orkanoid.Game
         private GameObject ballHookPoint;
         public Vector3 BallHookPointPosition => ballHookPoint != null ? ballHookPoint.transform.position : transform.position;
 
+        [SerializeField]
         private Rigidbody2D myRigidbody;
+        [SerializeField]
         private SpriteRenderer myRenderer;
         [SerializeField]
         private Vector2 movementConstraintBox = Vector2.one;
@@ -44,6 +46,7 @@ namespace Orkanoid.Game
 
         private void OnMovementVectorChanged(Vector2 movementVector)
         {
+            Debug.Log("Paddle recieved event");
             cachedMovementVector = new Vector2(movementVector.x, 0f);
             currentSpeed = 0f;
         }
@@ -51,7 +54,7 @@ namespace Orkanoid.Game
         private void FixedUpdate()
         {
             currentSpeed = Mathf.Lerp(0f, MaxPaddleSpeed, (currentSpeed / MaxPaddleSpeed) + (acceleration * Time.fixedDeltaTime * Mathf.Abs(cachedMovementVector.x)));
-            myRigidbody.MovePosition(ConstrainPosition((Vector2)transform.position + CurrentMovementVector));
+            transform.position = (ConstrainPosition((Vector2)transform.position + CurrentMovementVector));
         }
 
         private Vector2 ConstrainPosition(Vector2 position)

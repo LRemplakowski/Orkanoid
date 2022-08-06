@@ -1,4 +1,5 @@
 using SunsetSystems.Utils;
+using SunsetSystems.Utils.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Orkanoid.UI
         [SerializeField]
         private Animator animator;
 
+        [SerializeField]
         private bool fadedOut = true;
 
         // Start is called before the first frame update
@@ -34,22 +36,34 @@ namespace Orkanoid.UI
 
         public async Task FadeOut(float time = 1.0f)
         {
-            if (fadedOut)
-                return;
-            animator.speed = 1f / time;
-            animator.SetTrigger("SwitchFade");
-            while (!fadedOut)
-                await Task.Yield();
+            await Task.Run(async () =>
+            {
+                if (fadedOut)
+                    return;
+                Dispatcher.Instance.Invoke(() =>
+                {
+                    animator.speed = 1f / time;
+                    animator.SetTrigger("SwitchFade");
+                });
+                while (!fadedOut)
+                    await Task.Yield();
+            });
         }
 
         public async Task FadeIn(float time = 1.0f)
         {
-            if (!fadedOut)
-                return;
-            animator.speed = 1f / time;
-            animator.SetTrigger("SwitchFade");
-            while (fadedOut)
-                await Task.Yield();
+            await Task.Run(async () =>
+            {
+                if (!fadedOut)
+                    return;
+                Dispatcher.Instance.Invoke(() =>
+                {
+                    animator.speed = 1f / time;
+                    animator.SetTrigger("SwitchFade");
+                });
+                while (fadedOut)
+                    await Task.Yield();
+            });
         }
 
     }

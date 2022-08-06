@@ -132,9 +132,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a5d8d13b73dba4898f656fa3b62e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeedMultiplier: 0.3
+  movementSpeedMultiplier: 0.35
   acceleration: 5
   ballHookPoint: {fileID: 1565126900594242233}
+  myRigidbody: {fileID: 1565126901963413951}
+  myRenderer: {fileID: 1565126901963413923}
   movementConstraintBox: {x: 14, y: 0.4}
 --- !u!50 &1565126901963413951
 Rigidbody2D:
@@ -146,7 +148,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 1565126901963413924}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 1
+  m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0

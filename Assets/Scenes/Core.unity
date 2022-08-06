@@ -231,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 1707936055}
   brickPool: {fileID: 627926084}
+  fadePanel: {fileID: 0}
 --- !u!4 &407335171
 Transform:
   m_ObjectHideFlags: 0
@@ -310,6 +311,8 @@ MonoBehaviour:
   gameScoreBase: 100
   <HasGameStarted>k__BackingField: 0
   <IsGamePaused>k__BackingField: 0
+  levelLoader: {fileID: 0}
+  fadePanel: {fileID: 0}
 --- !u!114 &428126219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +586,7 @@ MonoBehaviour:
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
-  m_StopNaN: 0
+  m_StopNaN: 1
   m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1

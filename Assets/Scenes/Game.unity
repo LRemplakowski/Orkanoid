@@ -1071,9 +1071,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 847437909}
     m_Modifications:
+    - target: {fileID: 2851497793851341449, guid: 01ba1e91b2d6dc54897e1bd79373d8f7, type: 3}
+      propertyPath: m_Radius
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2851497793851341450, guid: 01ba1e91b2d6dc54897e1bd79373d8f7, type: 3}
       propertyPath: m_Name
       value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 2851497793851341451, guid: 01ba1e91b2d6dc54897e1bd79373d8f7, type: 3}
+      propertyPath: m_BodyType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2851497793851341454, guid: 01ba1e91b2d6dc54897e1bd79373d8f7, type: 3}
       propertyPath: m_RootOrder
