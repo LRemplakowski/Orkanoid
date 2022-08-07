@@ -46,7 +46,6 @@ namespace Orkanoid.Game
         {
             _originalPaddleScale = transform.localScale;
             _currentPaddleScale = _originalPaddleScale;
-            Debug.Log("Original paddle scale set to: " + _originalPaddleScale.ToString());
             originalHookPointPosition = ballHookPoint.transform.localPosition;
             _originalPosition = transform.position;
         }
@@ -92,7 +91,6 @@ namespace Orkanoid.Game
 
         public void ResetPaddle()
         {
-            Debug.Log("Reseting paddle, original scale: " + _originalPaddleScale.ToString());
             transform.localScale = _originalPaddleScale;
             transform.position = _originalPosition;
             ballHookPoint.transform.localPosition = originalHookPointPosition;
