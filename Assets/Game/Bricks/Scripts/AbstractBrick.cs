@@ -1,4 +1,5 @@
 using Orkanoid.Core;
+using Orkanoid.Core.Levels;
 using SunsetSystems.Utils;
 using System;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace Orkanoid.Game
 
         protected static BrickPool brickPool;
         protected static GameManager gameManager;
+        protected static BrickGrid brickGrid;
 
         public delegate void BrickDestroyedHandler(AbstractBrick brick);
         public event BrickDestroyedHandler BrickDestroyed;
@@ -34,6 +36,8 @@ namespace Orkanoid.Game
         protected virtual bool CountsTowardsWin => false;
 
         public static int BrickCounter { get; private set; }
+
+        private Vector2Int gridPosition;
 
         protected virtual void Awake()
         {
@@ -51,6 +55,10 @@ namespace Orkanoid.Game
             HitTaken += OnHitTaken;
             if (CountsTowardsWin)
                 BrickCounter++;
+            if (!brickGrid)
+                brickGrid = this.FindFirstComponentWithTag<BrickGrid>(TagConstants.BRICK_GRID);
+            if (!brickPool)
+                brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
         }
 
         protected void OnDisable()
@@ -63,12 +71,11 @@ namespace Orkanoid.Game
                 if (BrickCounter <= 0)
                     AllBricksSmashed?.Invoke();
             }
+            brickGrid.RemoveBrickFromGrid(gridPosition.x, gridPosition.y);
         }
 
         protected virtual void Start()
         {
-            if (!brickPool)
-                brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
             if (!gameManager)
                 gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
         }
@@ -111,9 +118,10 @@ namespace Orkanoid.Game
             hitsTaken = 0;
         }
 
-        public string GetBrickID()
-        {
-            return ID;
-        }
+        public string GetBrickID() => ID;
+
+        public void SetGridPosition(int x, int y) => gridPosition = new(x, y);
+
+        public Vector2Int GetGridPosition() => gridPosition;
     }
 }

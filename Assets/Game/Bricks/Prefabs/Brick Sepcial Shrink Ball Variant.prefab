@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1901604062877452699
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 129076237, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Name
+      value: Brick Sepcial Shrink Ball Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3516376
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.108668566
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 2930dac728f13084094973c364dda94f, type: 3}
+--- !u!212 &7380492126215456645 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 1901604062877452699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &7380492126215456646 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120285, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 1901604062877452699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7380492126215456651 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 1901604062877452699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &838307403843803545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7380492126215456651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bab78c267a8c84dbf01bc5722db3d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: shrinkBall
+  maxHealth: 1
+  hitsTaken: 0
+  spriteRenderer: {fileID: 7380492126215456645}
+  brickCollider: {fileID: 7380492126215456646}
+  brickHit: {fileID: 8300000, guid: 34d5bb9abb547594884e454ca1b839d1, type: 3}
+  powerUp: {fileID: 5301127209073988530, guid: 2d60d00b5c74f984abaa73cf2431bf81, type: 3}

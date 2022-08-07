@@ -649,8 +649,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 1707936055}
-  brickPool: {fileID: 627926084}
-  fadePanel: {fileID: 0}
 --- !u!4 &407335171
 Transform:
   m_ObjectHideFlags: 0
@@ -724,9 +722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17dbc6fac0389f4d9b7994543e28f62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentScore: 0
-  _currentLives: 3
-  _currentLevel: 0
   gameScoreBase: 100
   <HasGameStarted>k__BackingField: 0
   <IsGamePaused>k__BackingField: 0
@@ -1331,7 +1326,7 @@ GameObject:
   - component: {fileID: 942162538}
   - component: {fileID: 942162539}
   - component: {fileID: 942162540}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Health Loss Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1346,7 +1341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942162537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -6, z: 0}
+  m_LocalPosition: {x: 0, y: -6.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1741,10 +1736,25 @@ MonoBehaviour:
   brickDensity: 0.508
   brickTemplates:
   - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
   - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
   - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 838307403843803545, guid: 609bc9593b27a984bacf69d19fc909a7, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 833694922, guid: 0e5c16a8ea502e64bb59525523916ee8, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 1765540879, guid: e85d79a6331d8e14286822acf6a410b9, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 1515865945, guid: 02713c472a47b9d4dbd5996eaddaae00, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
   emptyBrick: {fileID: 4460603131052474348, guid: 5a0c2af61587864439917b5a08a8990d, type: 3}
-  brickGrid: {fileID: 0}
+  brickGrid: {fileID: 606952531}
   brickPool: {fileID: 627926084}
 --- !u!4 &1707936056
 Transform:

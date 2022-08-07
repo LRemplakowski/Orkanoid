@@ -1,21 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Orkanoid.Game
 {
-    public class SpecialBrick : MonoBehaviour
+    public class SpecialBrick : AbstractBrick
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField]
+        protected AudioClip brickHit;
+        [SerializeField]
+        protected AbstractPowerUp powerUp;
 
+        protected override bool CountsTowardsWin => true;
+        public sealed override BrickType GetBrickType() => BrickType.Special;
+
+        public override int GetPointValue()
+        {
+            return base.GetPointValue() * 2;
         }
 
-        // Update is called once per frame
-        void Update()
+        protected override void OnHealthBelowZero(IBrick brick)
         {
+            AbstractPowerUp powerUpInstance = Instantiate(powerUp);
+            powerUpInstance.transform.position = brick.GetTransform().position;
+            gameManager.AddPoints(brick.GetPointValue());
+            brickPool.ReturnToPool(brick);
+        }
 
+        protected override void OnHitTaken(IBrick brick)
+        {
+            if (brickHit)
+                AudioSource.PlayClipAtPoint(brickHit, brick.GetTransform().position, 1.0f);
         }
     }
 }

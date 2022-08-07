@@ -60,8 +60,10 @@ namespace Orkanoid.Core.Levels
         {
             foreach (IBrick brick in grid)
             {
+                if (brick == null)
+                    continue;
                 BrickType bt = brick.GetBrickType();
-                if (bt.Equals(BrickType.Default) || bt.Equals(BrickType.Special))
+                if ((bt.Equals(BrickType.Default) || bt.Equals(BrickType.Special)) && brick.GetGameObject().activeSelf)
                     return brick;
             }
             return null;
@@ -76,15 +78,22 @@ namespace Orkanoid.Core.Levels
                 if (grid[x, y] != null && !brick.Equals(grid[x, y]))
                     brickPool.ReturnToPool(grid[x, y]);
                 grid[x, y] = brick;
-                Vector3 worldPosition = myGridComponent.GetCellCenterWorld(new Vector3Int(x, y));
-                worldPosition.z = -5;
-                brick.GetTransform().localPosition = worldPosition;
+                brick.SetGridPosition(x, y);
+                brick.GetTransform().parent = transform;
+                Vector3 localPosition = myGridComponent.GetCellCenterLocal(new Vector3Int(x, y));
+                localPosition.z = -5;
+                brick.GetTransform().localPosition = localPosition;
             }
             catch (ArgumentOutOfRangeException e)
             {
                 Debug.LogException(e);
                 brickPool.ReturnToPool(brick);
             }
+        }
+
+        public void RemoveBrickFromGrid(int x, int y)
+        {
+            grid[x, y] = null;
         }
     }
 }

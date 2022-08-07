@@ -13,9 +13,8 @@ namespace Orkanoid.Core
     {
         private const string HIGHEST_SCORE = "HIGHEST_SCORE";
 
-        [SerializeField]
-        private int _currentScore = 0;
-        public int CurrentScore
+        private static int _currentScore = 0;
+        public static int CurrentScore
         {
             get
             {
@@ -27,9 +26,8 @@ namespace Orkanoid.Core
                 ScoreChanged?.Invoke(_currentScore);
             }
         }
-        [SerializeField]
-        private int _currentLives = 3;
-        public int CurrentLives
+        private static int _currentLives = 3;
+        public static int CurrentLives
         {
             get
             {
@@ -41,9 +39,8 @@ namespace Orkanoid.Core
                 LifeCountChanged?.Invoke(_currentLives);
             }
         }
-        [SerializeField]
-        private int _currentLevel = 0;
-        public int CurrentLevel
+        private static int _currentLevel = 0;
+        public static int CurrentLevel
         {
             get
             {
@@ -53,6 +50,18 @@ namespace Orkanoid.Core
             {
                 _currentLevel = value;
                 LevelChanged?.Invoke(_currentLevel);
+            }
+        }
+        private static int _currentHighScore = 0;
+        public static int CurrentHighScore
+        {
+            get
+            {
+                if (_currentHighScore <= 0)
+                    _currentHighScore = GetSavedHighScore();
+                if (CurrentScore > _currentHighScore)
+                    _currentHighScore = CurrentScore;
+                return _currentHighScore;
             }
         }
 
@@ -189,6 +198,8 @@ namespace Orkanoid.Core
             StopGame();
             await fadePanel.FadeOut();
             actionOnFade?.Invoke();
+            Ball.ResetBallSize();
+            this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE).ResetPaddle();
             await levelLoader.NextLevel(CurrentLevel);
             await fadePanel.FadeIn();
 
@@ -219,17 +230,16 @@ namespace Orkanoid.Core
         private void SaveHighScore()
         {
             int savedScore = PlayerPrefs.GetInt(HIGHEST_SCORE, 0);
-            if (CurrentScore > savedScore)
+            if (CurrentHighScore > savedScore)
             {
-                PlayerPrefs.SetInt(HIGHEST_SCORE, CurrentScore);
+                PlayerPrefs.SetInt(HIGHEST_SCORE, CurrentHighScore);
                 PlayerPrefs.Save();
             }
         }
 
-        public static int GetHighScore()
+        private static int GetSavedHighScore()
         {
-            int highScore = PlayerPrefs.GetInt(HIGHEST_SCORE, 0);
-            return highScore;
+            return PlayerPrefs.GetInt(HIGHEST_SCORE, 0);
         }
     }
 }

@@ -1,6 +1,4 @@
 using Orkanoid.Core;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -16,8 +14,24 @@ namespace Orkanoid.UI
         {
             if (!text)
                 text = GetComponent<TextMeshProUGUI>();
-            int score = GameManager.GetHighScore();
-            string textToDisplay = "Your highest score: \n" + score;
+            DisplayScore();
+            GameManager.ScoreChanged += OnScoreChanged;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.ScoreChanged -= OnScoreChanged;
+        }
+
+        private void OnScoreChanged(int currentScore)
+        {
+            DisplayScore();
+        }
+
+        private void DisplayScore()
+        {
+            int score = GameManager.CurrentHighScore;
+            string textToDisplay = "High score: " + score;
             text.text = textToDisplay;
         }
     }

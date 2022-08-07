@@ -17,7 +17,14 @@ namespace Orkanoid.Game
         [SerializeField]
         private float launchVelocity = 1.0f;
         [SerializeField]
-        private int damage = 1;
+        private int defaultBallDamage = 1;
+        private static int currentBallDamage;
+
+        private delegate void BallResizeHandler();
+        private static event BallResizeHandler BallResized;
+
+        private static Vector3 ballScale;
+        private static Vector3 originalScale;
 
         private void Awake()
         {
@@ -25,16 +32,26 @@ namespace Orkanoid.Game
                 myRigidbody = GetComponent<Rigidbody2D>();
             if (!audioSource)
                 audioSource = GetComponent<AudioSource>();
+            originalScale = transform.localScale;
+            ballScale = originalScale;
+            currentBallDamage = defaultBallDamage;
         }
 
         private void OnEnable()
         {
             GameManager.GameStarted += LaunchBall;
+            BallResized += OnBallResized;
         }
 
         private void OnDisable()
         {
             GameManager.GameStarted -= LaunchBall;
+            BallResized -= OnBallResized;
+        }
+
+        private void OnBallResized()
+        {
+            transform.localScale = ballScale;
         }
 
         private void Start()
@@ -59,7 +76,7 @@ namespace Orkanoid.Game
         {
             if (collision.gameObject.TryGetComponent(out IBrick brick))
             {
-                brick.TakeHit(damage);
+                brick.TakeHit(currentBallDamage);
             }
             if (gameManager.HasGameStarted)
             {
@@ -83,6 +100,24 @@ namespace Orkanoid.Game
             launchVector.Normalize();
             Debug.LogWarning("Launching ball with velocity " + (launchVector * launchVelocity).ToString());
             myRigidbody.velocity = launchVector * launchVelocity;
+        }
+
+        public static void ResizeBalls(float multiplier)
+        {
+            ballScale *= multiplier;
+            BallResized?.Invoke();
+        }
+
+        public static void ResetBallSize()
+        {
+            ballScale = originalScale;
+            BallResized?.Invoke();
+        }
+
+        public static void AdjustBallDamage(int modifier)
+        {
+            currentBallDamage = Mathf.Clamp(currentBallDamage + modifier, 1, int.MaxValue);
+            Debug.Log("Adjusted ball damage: " + currentBallDamage);
         }
     }
 }

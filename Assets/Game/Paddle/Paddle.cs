@@ -18,6 +18,7 @@ namespace Orkanoid.Game
         [SerializeField]
         private GameObject ballHookPoint;
         public Vector3 BallHookPointPosition => ballHookPoint != null ? ballHookPoint.transform.position : transform.position;
+        private Vector3 originalHookPointPosition;
 
         [SerializeField]
         private Rigidbody2D myRigidbody;
@@ -26,12 +27,22 @@ namespace Orkanoid.Game
         [SerializeField]
         private Vector2 movementConstraintBox = Vector2.one;
 
+        private Vector3 originalScale;
+        private Vector3 originalPosition;
+
         private void Awake()
         {
             if (!myRigidbody)
                 myRigidbody = GetComponent<Rigidbody2D>();
             if (!myRenderer)
                 myRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        private void Start()
+        {
+            originalScale = transform.localScale;
+            originalHookPointPosition = ballHookPoint.transform.localPosition;
+            originalPosition = transform.position;
         }
 
         private void OnEnable()
@@ -46,7 +57,6 @@ namespace Orkanoid.Game
 
         private void OnMovementVectorChanged(Vector2 movementVector)
         {
-            Debug.Log("Paddle recieved event");
             cachedMovementVector = new Vector2(movementVector.x, 0f);
             currentSpeed = 0f;
         }
@@ -66,6 +76,23 @@ namespace Orkanoid.Game
             result = position.x > maxX ? new Vector2(maxX, position.y) : result;
             result = position.x < minX ? new Vector2(minX, position.y) : result;
             return result;
+        }
+
+        public void ResizePaddle(float sizeMultiplier)
+        {
+            transform.localScale = new(transform.localScale.x * sizeMultiplier, transform.localScale.y, transform.localScale.z);
+        }
+
+        public void ResetPaddle()
+        {
+            transform.localScale = originalScale;
+            transform.position = originalPosition;
+            ballHookPoint.transform.localPosition = originalHookPointPosition;
+        }
+
+        public void AdjustHookPointPosition(float positionMultiplier)
+        {
+            ballHookPoint.transform.localPosition *= positionMultiplier;
         }
 
         private void OnDrawGizmos()

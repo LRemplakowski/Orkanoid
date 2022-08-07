@@ -19,5 +19,14 @@ namespace Orkanoid.Game
         void ResetBrick();
 
         string GetBrickID();
+
+        void SetGridPosition(int x, int y);
+
+        void SetGridPosition(Vector2Int position)
+        {
+            SetGridPosition(position.x, position.y);
+        }
+
+        Vector2Int GetGridPosition();
     }
 }

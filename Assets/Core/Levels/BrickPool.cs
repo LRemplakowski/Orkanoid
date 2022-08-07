@@ -19,15 +19,13 @@ namespace Orkanoid.Core
 
         public IBrick GetBrickFromPool(IBrick template)
         {
-            //IBrick brick = Instantiate(template.GetGameObject()).GetComponent<IBrick>();
             IBrick brick;
             if (brickPools.TryGetValue(template.GetBrickID(), out List<IBrick> pool))
             {
-                brick = pool.Find(brick => !brick.GetGameObject().activeSelf);
+                brick = pool.Find(brick => brick != null);
                 if (brick != null)
                 {
                     brick.GetGameObject().SetActive(true);
-
                 }
                 else
                 {
@@ -35,6 +33,7 @@ namespace Orkanoid.Core
                     pool.Add(brick);
                     brick.GetGameObject().SetActive(true);
                 }
+                pool.Remove(brick);
             }
             else
             {
@@ -43,20 +42,10 @@ namespace Orkanoid.Core
                 brickPool.Add(brick);
                 brick.GetGameObject().SetActive(true);
                 brickPools.Add(template.GetBrickID(), brickPool);
+                brickPool.Remove(brick);
             }
-            Debug.Log("Taking from pool: " + brick.GetBrickID());
             BrickTakenFromPool?.Invoke(brick);
             return brick;
-        }
-
-        [ContextMenu("List pools")]
-        void ListAllPools()
-        {
-            foreach (string key in brickPools.Keys)
-            {
-                Debug.LogWarning("Key: " + key);
-                Debug.LogWarning("Key entries: " + brickPools[key].Count);
-            }
         }
 
         public void ReturnToPool(IBrick brick)
@@ -65,10 +54,10 @@ namespace Orkanoid.Core
                 return;
             if (brickPools.TryGetValue(brick.GetBrickID(), out List<IBrick> pool))
             {
-                Debug.Log("Returning to pool: " + brick.GetBrickID());
                 brick.GetTransform().parent = this.transform;
                 brick.ResetBrick();
                 brick.GetGameObject().SetActive(false);
+                pool.Add(brick);
             }
             BrickReturnedToPool?.Invoke(brick);
         }

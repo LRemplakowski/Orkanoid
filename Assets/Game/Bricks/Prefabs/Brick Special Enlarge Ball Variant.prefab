@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6051832108114108930
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 129076237, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Name
+      value: Brick Special Enlarge Ball Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3516376
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Color.r
+      value: 0.108668566
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 2930dac728f13084094973c364dda94f, type: 3}
+--- !u!1 &3455230205928549394 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 6051832108114108930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1765540879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3455230205928549394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bab78c267a8c84dbf01bc5722db3d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: enlargeBall
+  maxHealth: 1
+  hitsTaken: 0
+  spriteRenderer: {fileID: 3455230205928549404}
+  brickCollider: {fileID: 3455230205928549407}
+  brickHit: {fileID: 8300000, guid: 34d5bb9abb547594884e454ca1b839d1, type: 3}
+  powerUp: {fileID: 8716164980017362464, guid: 688c04c234498a840ac228623b933e70, type: 3}
+--- !u!212 &3455230205928549404 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 6051832108114108930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &3455230205928549407 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120285, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 6051832108114108930}
+  m_PrefabAsset: {fileID: 0}

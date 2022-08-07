@@ -9,6 +9,8 @@ namespace Orkanoid.UI
     {
         [SerializeField]
         private TextMeshProUGUI text;
+        [SerializeField]
+        public GameObject heartParent;
 
         private void Awake()
         {

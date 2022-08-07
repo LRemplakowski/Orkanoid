@@ -8,6 +8,9 @@ namespace Orkanoid.Game
         [SerializeField]
         protected AudioClip brickHit;
 
+        protected override bool CountsTowardsWin => true;
+        public sealed override BrickType GetBrickType() => BrickType.Default;
+
         protected override void OnHealthBelowZero(IBrick brick)
         {
             gameManager.AddPoints(brick.GetPointValue());
@@ -19,7 +22,5 @@ namespace Orkanoid.Game
             if (brickHit)
                 AudioSource.PlayClipAtPoint(brickHit, transform.position, 1.0f);
         }
-
-        public sealed override BrickType GetBrickType() => BrickType.Default;
     }
 }
