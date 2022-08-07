@@ -5,12 +5,11 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
-using SunsetSystems.Utils.Threading;
 
 namespace Orkanoid.Core.Levels
 {
     [RequireComponent(typeof(Tagger))]
-    public class LevelGenerator : MonoBehaviour
+    internal class LevelGenerator : MonoBehaviour
     {
         [SerializeField]
         private MirrorAxis defaultMirrorAxis = MirrorAxis.None;
@@ -37,40 +36,31 @@ namespace Orkanoid.Core.Levels
         public async Task GenerateLevel(int seed, MirrorAxis mirrorAxis)
         {
             int width = 0, height = 0;
-            Dispatcher.Instance.Invoke(() =>
-            {
-                EnsureDependencies();
-                width = brickGrid.GridWidth;
-                height = brickGrid.GridHeight;
-            });
-            await UnityAwaiters.NextFrame();
+            EnsureDependencies();
+            width = brickGrid.GridWidth;
+            height = brickGrid.GridHeight;
+            brickGrid.ReturnBricksToPool();
+            AbstractBrick.ResetBrickCounter();
+            bool[][] levelPattern = new bool[height][];
+            System.Random random = new(seed);
             await Task.Run(async () =>
             {
-                System.Random random = new(seed);
                 if (randomizeLevelSymmetry)
                     mirrorAxis = (MirrorAxis)random.Next(Enum.GetValues(typeof(MirrorAxis)).Length);
-                bool[][] levelPattern = new bool[height][];
                 levelPattern = await BuildLevelPatternRecursive(levelPattern, brickDensity, width, height, random);
-                GridTemplate gridTemplate = null;
-                Dispatcher.Instance.Invoke(async () =>
-                {
-                    gridTemplate = new GridTemplate.GridTemplateBuilder(levelPattern, new(brickTemplates), emptyBrick, random, brickPool)
-                        .SetSymmetryAxis(mirrorAxis)
-                        .Build();
-                    await UnityAwaiters.NextFrame();
-                });
-                Dispatcher.Instance.Invoke(() =>
-                {
-                    for (int i = 0; i < width; i++)
-                    {
-                        for (int j = 0; j < height; j++)
-                        {
-                            IBrick brick = gridTemplate.Get(i, j);
-                            brickGrid.PlaceBrickInGrid(gridTemplate.Get(i, j), i, j);
-                        }
-                    }
-                });
             });
+            GridTemplate gridTemplate = null;
+            gridTemplate = new GridTemplate.GridTemplateBuilder(levelPattern, new(brickTemplates), emptyBrick, random, brickPool)
+            .SetSymmetryAxis(mirrorAxis)
+            .Build();
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    IBrick brick = gridTemplate.Get(i, j);
+                    brickGrid.PlaceBrickInGrid(gridTemplate.Get(i, j), i, j);
+                }
+            }
 
             void EnsureDependencies()
             {

@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using Orkanoid.Core;
+using SunsetSystems.Utils;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -10,12 +10,16 @@ namespace Orkanoid.Game
         {
         }
 
+        // This shouldn't ever be called for an empty brick, but we'll return it to the object pool just in case.
         protected override void OnHealthBelowZero(IBrick brick)
         {
+            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
         }
 
+        // This shouldn't ever be called for an empty brick, but we'll return it to the object pool just in case.
         protected override void OnHitTaken(IBrick brick)
         {
+            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
         }
 
         protected override void Start()

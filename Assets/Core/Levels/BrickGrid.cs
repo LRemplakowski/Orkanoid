@@ -22,11 +22,6 @@ namespace Orkanoid.Core.Levels
         [SerializeField]
         private Grid myGridComponent;
 
-        private int brickCount = 0;
-
-        public delegate void AllBricksDestroyedHandler();
-        public static event AllBricksDestroyedHandler AllBricksDestroyed;
-
         private void Awake()
         {
             grid = new IBrick[_gridSizeX, _gridSizeY];
@@ -53,6 +48,14 @@ namespace Orkanoid.Core.Levels
             }
         }
 
+        public void ReturnBricksToPool()
+        {
+            foreach (IBrick brick in grid)
+            {
+                brickPool.ReturnToPool(brick);
+            }
+        }
+
         public IBrick GetRandomBrick()
         {
             foreach (IBrick brick in grid)
@@ -70,35 +73,17 @@ namespace Orkanoid.Core.Levels
                 grid = new IBrick[_gridSizeX, _gridSizeY];
             try
             {
-                if (grid[x, y] != null)
+                if (grid[x, y] != null && !brick.Equals(grid[x, y]))
                     brickPool.ReturnToPool(grid[x, y]);
                 grid[x, y] = brick;
                 Vector3 worldPosition = myGridComponent.GetCellCenterWorld(new Vector3Int(x, y));
                 worldPosition.z = -5;
                 brick.GetTransform().localPosition = worldPosition;
-                if (brick is AbstractBrick b)
-                {
-                    if (!b.GetBrickType().Equals(BrickType.Empty) && !b.GetBrickType().Equals(BrickType.Indestructible))
-                        brickCount++;
-                    b.BrickDestroyed += OnBrickDestroyed;
-                }
             }
             catch (ArgumentOutOfRangeException e)
             {
                 Debug.LogException(e);
                 brickPool.ReturnToPool(brick);
-            }
-
-            void OnBrickDestroyed(AbstractBrick brick)
-            {
-                PlaceBrickInGrid(brickPool.GetBrickFromPool(emptyBrick), x, y);
-                if (!brick.GetBrickType().Equals(BrickType.Empty) && !brick.GetBrickType().Equals(BrickType.Indestructible))
-                    brickCount--;
-                if (brickCount <= 0)
-                {
-                    AllBricksDestroyed?.Invoke();
-                }
-                brick.BrickDestroyed -= OnBrickDestroyed;
             }
         }
     }

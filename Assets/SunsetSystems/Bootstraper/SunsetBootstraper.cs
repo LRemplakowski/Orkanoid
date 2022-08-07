@@ -1,8 +1,10 @@
 using SunsetSystems.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SunsetSystems.Utils.Threading;
@@ -38,6 +40,7 @@ namespace SunsetSystems.Bootstraper
                         if (!SceneManager.GetSceneByPath(path).isLoaded)
                         {
                             AsyncOperation op = EditorSceneManager.LoadSceneAsyncInPlayMode(path, parameters);
+
                             while (!op.isDone)
                             {
                                 await Task.Yield();
@@ -48,6 +51,38 @@ namespace SunsetSystems.Bootstraper
             }
             return tasks;
         }
-    }
+#else
+        protected async void Start()
+        {
+            List<string> bootstrapSceneNames = new();
+            bootstrapSceneNames.Add("UI");
+            await Task.WhenAll(LoadScenesByNameAsync(bootstrapSceneNames));
+        }
+
+        private List<Task> LoadScenesByNameAsync(List<string> names)
+        {
+            List<Task> tasks = new();
+            Dispatcher dispatcher = this.FindFirstComponentWithTag<Dispatcher>(TagConstants.UNITY_DISPATCHER);
+            foreach (string name in names)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    dispatcher.Invoke(async () =>
+                    {
+                        if (!SceneManager.GetSceneByPath(name).isLoaded)
+                        {
+                            AsyncOperation op = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+
+                            while (!op.isDone)
+                            {
+                                await Task.Yield();
+                            }
+                        }
+                    });
+                }));
+            }
+            return tasks;
+        }
 #endif
+    }
 }

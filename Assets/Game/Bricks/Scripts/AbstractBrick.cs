@@ -1,7 +1,6 @@
 using Orkanoid.Core;
 using SunsetSystems.Utils;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -29,6 +28,13 @@ namespace Orkanoid.Game
         public delegate void HitTakenHandler(AbstractBrick brick);
         public event HitTakenHandler HitTaken;
 
+        public delegate void AllBricksSmashedHandler();
+        public static event AllBricksSmashedHandler AllBricksSmashed;
+
+        protected virtual bool CountsTowardsWin => false;
+
+        public static int BrickCounter { get; private set; }
+
         protected virtual void Awake()
         {
             if (!spriteRenderer)
@@ -43,12 +49,20 @@ namespace Orkanoid.Game
         {
             BrickDestroyed += OnHealthBelowZero;
             HitTaken += OnHitTaken;
+            if (CountsTowardsWin)
+                BrickCounter++;
         }
 
         protected void OnDisable()
         {
             BrickDestroyed -= OnHealthBelowZero;
             HitTaken -= OnHitTaken;
+            if (CountsTowardsWin)
+            {
+                BrickCounter--;
+                if (BrickCounter <= 0)
+                    AllBricksSmashed?.Invoke();
+            }
         }
 
         protected virtual void Start()
@@ -57,6 +71,11 @@ namespace Orkanoid.Game
                 brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
             if (!gameManager)
                 gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
+        }
+
+        public static void ResetBrickCounter()
+        {
+            BrickCounter = 0;
         }
 
         public virtual int GetHealthLeft()

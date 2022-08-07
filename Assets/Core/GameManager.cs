@@ -1,4 +1,5 @@
 using Orkanoid.Core.Levels;
+using Orkanoid.Game;
 using Orkanoid.UI;
 using SunsetSystems.Utils;
 using System;
@@ -10,13 +11,15 @@ namespace Orkanoid.Core
     [RequireComponent(typeof(Tagger))]
     public class GameManager : MonoBehaviour
     {
+        private const string HIGHEST_SCORE = "HIGHEST_SCORE";
+
         [SerializeField]
         private int _currentScore = 0;
         public int CurrentScore
         {
             get
             {
-                return _currentLives;
+                return _currentScore;
             }
             private set
             {
@@ -89,12 +92,12 @@ namespace Orkanoid.Core
 
         private void OnEnable()
         {
-            BrickGrid.AllBricksDestroyed += OnAllBricksDestroyed;
+            AbstractBrick.AllBricksSmashed += OnAllBricksDestroyed;
         }
 
         private void OnDisable()
         {
-            BrickGrid.AllBricksDestroyed -= OnAllBricksDestroyed;
+            AbstractBrick.AllBricksSmashed -= OnAllBricksDestroyed;
         }
 
         private void Start()
@@ -104,6 +107,9 @@ namespace Orkanoid.Core
 
         public void ResetGame()
         {
+            _currentScore = 0;
+            _currentLives = 3;
+            _currentLevel = 0;
             ScoreChanged?.Invoke(_currentScore);
             LifeCountChanged?.Invoke(_currentLives);
         }
@@ -147,7 +153,7 @@ namespace Orkanoid.Core
             // Can change this to long overflow if needed.
             try
             {
-                CurrentScore = checked(_currentScore + (gameScoreBase * pointValue));
+                CurrentScore = checked(_currentScore + (gameScoreBase * pointValue * (CurrentLevel + 1)));
             }
             catch (OverflowException)
             {
@@ -195,10 +201,35 @@ namespace Orkanoid.Core
             }
         }
 
-        private void GameOver()
+        private async void GameOver()
         {
-            CurrentLives = 3;
+            SaveHighScore();
             StopGame();
+            await ReturnToMainMenu();
+
+            async Task ReturnToMainMenu()
+            {
+                await fadePanel.FadeOut();
+                this.FindFirstComponentWithTag<Canvas>(TagConstants.MAIN_MENU_CANVAS).gameObject.SetActive(true);
+                this.FindFirstComponentWithTag<PlaySpace>(TagConstants.PLAY_SPACE).gameObject.SetActive(false);
+                await fadePanel.FadeIn();
+            }
+        }
+
+        private void SaveHighScore()
+        {
+            int savedScore = PlayerPrefs.GetInt(HIGHEST_SCORE, 0);
+            if (CurrentScore > savedScore)
+            {
+                PlayerPrefs.SetInt(HIGHEST_SCORE, CurrentScore);
+                PlayerPrefs.Save();
+            }
+        }
+
+        public static int GetHighScore()
+        {
+            int highScore = PlayerPrefs.GetInt(HIGHEST_SCORE, 0);
+            return highScore;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Orkanoid.Core
                 brick.GetGameObject().SetActive(true);
                 brickPools.Add(template.GetBrickID(), brickPool);
             }
+            Debug.Log("Taking from pool: " + brick.GetBrickID());
             BrickTakenFromPool?.Invoke(brick);
             return brick;
         }
@@ -60,8 +61,11 @@ namespace Orkanoid.Core
 
         public void ReturnToPool(IBrick brick)
         {
+            if (brick == null)
+                return;
             if (brickPools.TryGetValue(brick.GetBrickID(), out List<IBrick> pool))
             {
+                Debug.Log("Returning to pool: " + brick.GetBrickID());
                 brick.GetTransform().parent = this.transform;
                 brick.ResetBrick();
                 brick.GetGameObject().SetActive(false);
