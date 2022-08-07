@@ -27,8 +27,12 @@ namespace Orkanoid.Game
         [SerializeField]
         private Vector2 movementConstraintBox = Vector2.one;
 
-        private Vector3 originalScale;
-        private Vector3 originalPosition;
+        private static Vector3 _originalPaddleScale;
+        public static Vector3 OriginalPaddleScale { get => _originalPaddleScale; }
+        private static Vector3 _currentPaddleScale;
+        public static Vector3 CurrentPaddleScale { get => _currentPaddleScale; }
+        private static Vector3 _originalPosition;
+        public static Vector3 OriginalPosition { get => _originalPosition; }
 
         private void Awake()
         {
@@ -40,9 +44,11 @@ namespace Orkanoid.Game
 
         private void Start()
         {
-            originalScale = transform.localScale;
+            _originalPaddleScale = transform.localScale;
+            _currentPaddleScale = _originalPaddleScale;
+            Debug.Log("Original paddle scale set to: " + _originalPaddleScale.ToString());
             originalHookPointPosition = ballHookPoint.transform.localPosition;
-            originalPosition = transform.position;
+            _originalPosition = transform.position;
         }
 
         private void OnEnable()
@@ -80,13 +86,15 @@ namespace Orkanoid.Game
 
         public void ResizePaddle(float sizeMultiplier)
         {
-            transform.localScale = new(transform.localScale.x * sizeMultiplier, transform.localScale.y, transform.localScale.z);
+            _currentPaddleScale = new(transform.localScale.x * sizeMultiplier, transform.localScale.y, transform.localScale.z);
+            transform.localScale = CurrentPaddleScale;
         }
 
         public void ResetPaddle()
         {
-            transform.localScale = originalScale;
-            transform.position = originalPosition;
+            Debug.Log("Reseting paddle, original scale: " + _originalPaddleScale.ToString());
+            transform.localScale = _originalPaddleScale;
+            transform.position = _originalPosition;
             ballHookPoint.transform.localPosition = originalHookPointPosition;
         }
 

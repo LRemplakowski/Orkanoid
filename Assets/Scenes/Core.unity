@@ -418,7 +418,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &177240878
 MonoBehaviour:
@@ -618,6 +618,64 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1565126901963413922, guid: 774f53b6a2b4b0a4580a74d70d7b01be, type: 3}
   m_PrefabInstance: {fileID: 1565126901695163343}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &377929051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 377929053}
+  - component: {fileID: 377929052}
+  - component: {fileID: 377929054}
+  m_Layer: 0
+  m_Name: SaveLoadManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &377929052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377929051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4ae30044179aee4ea8b225281125a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &377929053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377929051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &377929054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377929051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3f36d87db2ac447a3cb25339c61571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: SAVE_LOAD_MANAGER
 --- !u!1 &407335169
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +707,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 1707936055}
+  brickPool: {fileID: 0}
+  brickGrid: {fileID: 0}
 --- !u!4 &407335171
 Transform:
   m_ObjectHideFlags: 0
@@ -708,7 +768,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &428126218
 MonoBehaviour:
@@ -723,8 +783,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameScoreBase: 100
-  <HasGameStarted>k__BackingField: 0
-  <IsGamePaused>k__BackingField: 0
   levelLoader: {fileID: 407335170}
   fadePanel: {fileID: 0}
 --- !u!114 &428126219
@@ -772,7 +830,7 @@ Transform:
   - {fileID: 407335171}
   - {fileID: 627926086}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &573972475
 GameObject:
@@ -1039,7 +1097,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627926083
 GameObject:
@@ -1071,6 +1129,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70993713b9b5d964dbe142f9f07d5376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brickTemplates:
+  - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 838307403843803545, guid: 609bc9593b27a984bacf69d19fc909a7, type: 3}
+  - {fileID: 1765540879, guid: e85d79a6331d8e14286822acf6a410b9, type: 3}
+  - {fileID: 833694922, guid: 0e5c16a8ea502e64bb59525523916ee8, type: 3}
+  - {fileID: 1773917753, guid: 70a81cd664ddff547b4db8fff7e72aea, type: 3}
+  - {fileID: 1515865945, guid: 02713c472a47b9d4dbd5996eaddaae00, type: 3}
+  - {fileID: 4460603131052474348, guid: 5a0c2af61587864439917b5a08a8990d, type: 3}
+  - {fileID: 1803986654, guid: 2b250f08579e73d41af5aa6eefd3a914, type: 3}
 --- !u!114 &627926085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1288,7 +1357,7 @@ Transform:
   - {fileID: 665164244}
   - {fileID: 71121399}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &847437910
 MonoBehaviour:
@@ -1469,7 +1538,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &951148848
 MonoBehaviour:
@@ -1599,7 +1668,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1074114325}
         m_TargetAssemblyTypeName: Orkanoid.Core.PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnPauseGame
+        m_MethodName: OnSwitchPauseState
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1629,7 +1698,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1074114325
 MonoBehaviour:
@@ -1699,7 +1768,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1707936054
 GameObject:
@@ -1753,6 +1822,16 @@ MonoBehaviour:
   - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
   - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
   - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  - {fileID: 1773917753, guid: 70a81cd664ddff547b4db8fff7e72aea, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 5496168332219201162, guid: 3b391122ec8aac9428fbfdc1345920c0, type: 3}
+  - {fileID: 4255615850041914660, guid: 9bb406663de4b664d8132b5edfdcecd4, type: 3}
+  - {fileID: 1803986654, guid: 2b250f08579e73d41af5aa6eefd3a914, type: 3}
+  - {fileID: 1803986654, guid: 2b250f08579e73d41af5aa6eefd3a914, type: 3}
   emptyBrick: {fileID: 4460603131052474348, guid: 5a0c2af61587864439917b5a08a8990d, type: 3}
   brickGrid: {fileID: 606952531}
   brickPool: {fileID: 627926084}
@@ -1794,8 +1873,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1880320070}
   - component: {fileID: 1880320069}
+  - component: {fileID: 1880320071}
+  - component: {fileID: 1880320072}
   m_Layer: 0
-  m_Name: Main Theme
+  m_Name: Sound Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1910,8 +1991,34 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1880320071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880320068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c2a9ffa731ad5a43958689cc97a3d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 1880320069}
+--- !u!114 &1880320072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880320068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3f36d87db2ac447a3cb25339c61571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: SOUND_CONTROLLER
 --- !u!1001 &1565126901695163343
 PrefabInstance:
   m_ObjectHideFlags: 0

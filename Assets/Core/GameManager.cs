@@ -1,4 +1,5 @@
 using Orkanoid.Core.Levels;
+using Orkanoid.Core.Saves;
 using Orkanoid.Game;
 using Orkanoid.UI;
 using SunsetSystems.Utils;
@@ -39,6 +40,7 @@ namespace Orkanoid.Core
                 LifeCountChanged?.Invoke(_currentLives);
             }
         }
+
         private static int _currentLevel = 0;
         public static int CurrentLevel
         {
@@ -68,10 +70,8 @@ namespace Orkanoid.Core
         [SerializeField]
         private int gameScoreBase = 100;
 
-        [field: SerializeField]
-        public bool HasGameStarted { get; private set; }
-        [field: SerializeField]
-        public bool IsGamePaused { get; private set; }
+        public static bool HasGameStarted { get; private set; }
+        public static bool IsGamePaused { get; private set; }
 
         public delegate void GameStartedHandler();
         public static event GameStartedHandler GameStarted;
@@ -109,11 +109,6 @@ namespace Orkanoid.Core
             AbstractBrick.AllBricksSmashed -= OnAllBricksDestroyed;
         }
 
-        private void Start()
-        {
-            ResetGame();
-        }
-
         public void ResetGame()
         {
             _currentScore = 0;
@@ -121,6 +116,12 @@ namespace Orkanoid.Core
             _currentLevel = 0;
             ScoreChanged?.Invoke(_currentScore);
             LifeCountChanged?.Invoke(_currentLives);
+            StopGame();
+            ResumeGame();
+            Paddle paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
+            paddle.ResetPaddle();
+            Ball.ResetBallSize();
+            Ball.AdjustBallDamage(int.MinValue);
         }
 
         public void StartGame()
@@ -139,12 +140,16 @@ namespace Orkanoid.Core
         {
             IsGamePaused = true;
             GamePaused?.Invoke();
+            this.TryFindFirstWithTag(TagConstants.PAUSE_GAME_CANVAS, out GameObject pauseUI);
+            pauseUI.SetActive(true);
         }
 
         public void ResumeGame()
         {
             IsGamePaused = false;
             GameResumed?.Invoke();
+            this.TryFindFirstWithTag(TagConstants.PAUSE_GAME_CANVAS, out GameObject pauseUI);
+            pauseUI.SetActive(false);
         }
 
         public void LoseLife()
@@ -154,6 +159,11 @@ namespace Orkanoid.Core
                 GameOver();
             else
                 StopGame();
+        }
+
+        public void AddLives(int lives)
+        {
+            CurrentLives += lives;
         }
 
         public void AddPoints(int pointValue)
@@ -173,7 +183,8 @@ namespace Orkanoid.Core
 
         private async void OnAllBricksDestroyed()
         {
-            await NextLevel();
+            if (!IsGamePaused && CurrentLives > 0)
+                await NextLevel();
         }
 
         public async Task NextLevel()
@@ -202,14 +213,51 @@ namespace Orkanoid.Core
             this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE).ResetPaddle();
             await levelLoader.NextLevel(CurrentLevel);
             await fadePanel.FadeIn();
+        }
 
-            void EnsureDependencies()
+        internal async Task LoadSavedLevel(SaveData savedData)
+        {
+            EnsureDependencies();
+            ResetGame();
+            CurrentLevel = savedData.levelID;
+            CurrentLives = savedData.currentLives;
+            CurrentScore = savedData.currentScore;
+            await fadePanel.FadeOut();
+            SwitchUIToGame();
+            InjectBallData(savedData);
+            InjectPaddleData(savedData);
+            levelLoader.LoadSavedLevel(savedData.bricks);
+            await fadePanel.FadeIn();
+
+            void InjectBallData(SaveData savedData)
             {
-                if (!levelLoader)
-                    levelLoader = this.FindFirstComponentWithTag<LevelLoader>(TagConstants.LEVEL_LOADER);
-                if (!fadePanel)
-                    fadePanel = this.FindFirstComponentWithTag<FadePanel>(TagConstants.FADE_PANEL);
+                Ball.ResetBallSize();
+                Ball.AdjustBallDamage(int.MinValue);
+                Ball.AdjustBallDamage(savedData.ballDamage);
+                Ball.ResizeBalls(savedData.ballScale);
             }
+
+            void SwitchUIToGame()
+            {
+                this.FindFirstComponentWithTag<PlaySpace>(TagConstants.PLAY_SPACE).gameObject.SetActive(true);
+                this.FindFirstComponentWithTag<Canvas>(TagConstants.MAIN_MENU_CANVAS).gameObject.SetActive(false);
+            }
+
+            void InjectPaddleData(SaveData savedData)
+            {
+                Paddle paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
+                paddle.ResetPaddle();
+                paddle.AdjustHookPointPosition(savedData.ballScale);
+                paddle.ResizePaddle(savedData.paddleScale);
+            }
+        }
+
+        private void EnsureDependencies()
+        {
+            if (!levelLoader)
+                levelLoader = this.FindFirstComponentWithTag<LevelLoader>(TagConstants.LEVEL_LOADER);
+            if (!fadePanel)
+                fadePanel = this.FindFirstComponentWithTag<FadePanel>(TagConstants.FADE_PANEL);
         }
 
         private async void GameOver()
@@ -217,14 +265,14 @@ namespace Orkanoid.Core
             SaveHighScore();
             StopGame();
             await ReturnToMainMenu();
+        }
 
-            async Task ReturnToMainMenu()
-            {
-                await fadePanel.FadeOut();
-                this.FindFirstComponentWithTag<Canvas>(TagConstants.MAIN_MENU_CANVAS).gameObject.SetActive(true);
-                this.FindFirstComponentWithTag<PlaySpace>(TagConstants.PLAY_SPACE).gameObject.SetActive(false);
-                await fadePanel.FadeIn();
-            }
+        public async Task ReturnToMainMenu()
+        {
+            await fadePanel.FadeOut();
+            this.FindFirstComponentWithTag<Canvas>(TagConstants.MAIN_MENU_CANVAS).gameObject.SetActive(true);
+            this.FindFirstComponentWithTag<PlaySpace>(TagConstants.PLAY_SPACE).gameObject.SetActive(false);
+            await fadePanel.FadeIn();
         }
 
         private void SaveHighScore()

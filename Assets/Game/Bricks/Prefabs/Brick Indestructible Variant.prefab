@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7145582969250280921
+--- !u!1001 &8328441606029022446
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -13,19 +13,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_Name
-      value: Brick Special Enlarge Paddle Variant
+      value: Brick Indestructible
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eb0047bd772093247a2fda21ca1b9c69, type: 3}
+    - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_Color.b
-      value: 0.6226415
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_Color.g
-      value: 0.3516376
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_Color.r
-      value: 0.108668566
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8939395318297120287, guid: 2930dac728f13084094973c364dda94f, type: 3}
       propertyPath: m_RootOrder
@@ -74,38 +78,35 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8939395318297120284, guid: 2930dac728f13084094973c364dda94f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2930dac728f13084094973c364dda94f, type: 3}
---- !u!61 &2244245583996763076 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 8939395318297120285, guid: 2930dac728f13084094973c364dda94f, type: 3}
-  m_PrefabInstance: {fileID: 7145582969250280921}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &2244245583996763079 stripped
+--- !u!212 &1124647761037384432 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8939395318297120286, guid: 2930dac728f13084094973c364dda94f, type: 3}
-  m_PrefabInstance: {fileID: 7145582969250280921}
+  m_PrefabInstance: {fileID: 8328441606029022446}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2244245583996763081 stripped
+--- !u!61 &1124647761037384435 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8939395318297120285, guid: 2930dac728f13084094973c364dda94f, type: 3}
+  m_PrefabInstance: {fileID: 8328441606029022446}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1124647761037384446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8939395318297120272, guid: 2930dac728f13084094973c364dda94f, type: 3}
-  m_PrefabInstance: {fileID: 7145582969250280921}
+  m_PrefabInstance: {fileID: 8328441606029022446}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &833694922
+--- !u!114 &1803986654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2244245583996763081}
+  m_GameObject: {fileID: 1124647761037384446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34bab78c267a8c84dbf01bc5722db3d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2860bff2a22a13049a4dea3f2a384434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: enlargePaddle
-  <BrickTemplate>k__BackingField: {fileID: 2244245583996763081}
-  maxHealth: 1
+  ID: indestructible
+  maxHealth: 999
   hitsTaken: 0
-  spriteRenderer: {fileID: 2244245583996763079}
-  brickCollider: {fileID: 2244245583996763076}
-  brickHit: {fileID: 8300000, guid: 34d5bb9abb547594884e454ca1b839d1, type: 3}
-  powerUp: {fileID: 9036406172850608545, guid: c68e0bf1975826647960ca53679e71e1, type: 3}
+  spriteRenderer: {fileID: 1124647761037384432}
+  brickCollider: {fileID: 1124647761037384435}

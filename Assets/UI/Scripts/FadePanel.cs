@@ -36,11 +36,12 @@ namespace Orkanoid.UI
 
         public async Task FadeOut(float time = 1.0f)
         {
+            Dispatcher dispatcher = Dispatcher.Instance;
             await Task.Run(async () =>
             {
                 if (fadedOut)
                     return;
-                Dispatcher.Instance.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     animator.speed = 1f / time;
                     animator.SetTrigger("SwitchFade");
@@ -52,11 +53,12 @@ namespace Orkanoid.UI
 
         public async Task FadeIn(float time = 1.0f)
         {
+            Dispatcher dispatcher = Dispatcher.Instance;
             await Task.Run(async () =>
             {
                 if (!fadedOut)
                     return;
-                Dispatcher.Instance.Invoke(() =>
+                dispatcher.Invoke(() =>
                 {
                     animator.speed = 1f / time;
                     animator.SetTrigger("SwitchFade");

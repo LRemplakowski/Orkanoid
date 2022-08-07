@@ -2,7 +2,6 @@ using Orkanoid.Game;
 using SunsetSystems.Utils;
 using System;
 using UnityEngine;
-using System.Linq;
 
 namespace Orkanoid.Core.Levels
 {
@@ -13,8 +12,8 @@ namespace Orkanoid.Core.Levels
         private int _gridSizeX = 1, _gridSizeY = 1;
         public int GridWidth => _gridSizeX;
         public int GridHeight => _gridSizeY;
-        [SerializeField]
-        private IBrick[,] grid;
+        private static IBrick[,] _grid;
+        public static IBrick[,] Grid { get => _grid; }
         [SerializeField]
         private BrickPool brickPool;
         [SerializeField]
@@ -24,7 +23,7 @@ namespace Orkanoid.Core.Levels
 
         private void Awake()
         {
-            grid = new IBrick[_gridSizeX, _gridSizeY];
+            _grid = new IBrick[_gridSizeX, _gridSizeY];
             myGridComponent = GetComponent<Grid>();
         }
 
@@ -38,7 +37,7 @@ namespace Orkanoid.Core.Levels
         private void PopulateGridEmpty()
         {
             this.transform.DestroyChildrenImmediate();
-            grid = new IBrick[_gridSizeX, _gridSizeY];
+            _grid = new IBrick[_gridSizeX, _gridSizeY];
             for (int i = 0; i < _gridSizeX; i++)
             {
                 for (int j = 0; j < _gridSizeY; j++)
@@ -50,15 +49,19 @@ namespace Orkanoid.Core.Levels
 
         public void ReturnBricksToPool()
         {
-            foreach (IBrick brick in grid)
+            foreach (IBrick brick in _grid)
             {
-                brickPool.ReturnToPool(brick);
+                if (brick != null)
+                {
+                    brickPool.ReturnToPool(brick);
+                    RemoveBrickFromGrid(brick.GetGridPosition().x, brick.GetGridPosition().y);
+                }
             }
         }
 
         public IBrick GetRandomBrick()
         {
-            foreach (IBrick brick in grid)
+            foreach (IBrick brick in _grid)
             {
                 if (brick == null)
                     continue;
@@ -71,13 +74,15 @@ namespace Orkanoid.Core.Levels
 
         public void PlaceBrickInGrid(IBrick brick, int x, int y)
         {
-            if (grid == null)
-                grid = new IBrick[_gridSizeX, _gridSizeY];
+            if (_grid == null)
+                _grid = new IBrick[_gridSizeX, _gridSizeY];
+            if (brick == null)
+                return;
             try
             {
-                if (grid[x, y] != null && !brick.Equals(grid[x, y]))
-                    brickPool.ReturnToPool(grid[x, y]);
-                grid[x, y] = brick;
+                if (_grid[x, y] != null && !brick.Equals(_grid[x, y]))
+                    brickPool.ReturnToPool(_grid[x, y]);
+                _grid[x, y] = brick;
                 brick.SetGridPosition(x, y);
                 brick.GetTransform().parent = transform;
                 Vector3 localPosition = myGridComponent.GetCellCenterLocal(new Vector3Int(x, y));
@@ -93,7 +98,7 @@ namespace Orkanoid.Core.Levels
 
         public void RemoveBrickFromGrid(int x, int y)
         {
-            grid[x, y] = null;
+            _grid[x, y] = null;
         }
     }
 }

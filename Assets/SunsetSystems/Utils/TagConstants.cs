@@ -13,10 +13,13 @@
         public const string UNITY_DISPATCHER = "UNITY_DISPATCHER";
         public const string BRICK_POOL = "BRICK_POOL";
         public const string LEVEL_LOADER = "LEVEL_LOADER";
+        public const string SAVE_LOAD_MANAGER = "SAVE_LOAD_MANAGER";
         public const string FADE_PANEL = "FADE_PANEL";
+        public const string SOUND_CONTROLLER = "SOUND_CONTROLLER";
 
         public const string MAIN_MENU_CANVAS = "MAIN_MENU_CANVAS";
         public const string GAME_UI_CANVAS = "GAME_UI_CANVAS";
         public const string LOADING_SCREEN_CANVAS = "LOADING_SCREEN_CANVAS";
+        public const string PAUSE_GAME_CANVAS = "PAUSE_GAME_CANVAS";
     }
 }

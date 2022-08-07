@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: shrinkBall
+  <BrickTemplate>k__BackingField: {fileID: 7380492126215456651}
   maxHealth: 1
   hitsTaken: 0
   spriteRenderer: {fileID: 7380492126215456645}

@@ -93,7 +93,11 @@ public static class Extensions
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
+            Transform child = transform.GetChild(i);
+            if (child.Equals(transform))
+                continue;
+            else
+                UnityEngine.Object.Destroy(child.gameObject);
         }
     }
 
@@ -101,7 +105,11 @@ public static class Extensions
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            UnityEngine.Object.DestroyImmediate(transform.GetChild(i).gameObject);
+            Transform child = transform.GetChild(i);
+            if (child.Equals(transform))
+                continue;
+            else
+                UnityEngine.Object.DestroyImmediate(child.gameObject);
         }
     }
 }

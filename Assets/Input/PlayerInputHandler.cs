@@ -15,6 +15,11 @@ namespace Orkanoid.Core
 
         private void Start()
         {
+            EnsureDependencies();
+        }
+
+        private void EnsureDependencies()
+        {
             if (!gameManager)
                 gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
             if (!gameManager)
@@ -25,6 +30,8 @@ namespace Orkanoid.Core
 
         public void OnMovePaddle(InputAction.CallbackContext context)
         {
+            if (GameManager.IsGamePaused)
+                return;
             Vector2 movementVector = context.ReadValue<Vector2>();
             MovementVectorChanged?.Invoke(movementVector);
         }
@@ -33,7 +40,8 @@ namespace Orkanoid.Core
         {
             if (!context.performed)
                 return;
-            if (!gameManager.HasGameStarted)
+            EnsureDependencies();
+            if (!GameManager.HasGameStarted && !GameManager.IsGamePaused)
             {
                 gameManager.StartGame();
             }
@@ -43,15 +51,14 @@ namespace Orkanoid.Core
         {
             if (!context.performed)
                 return;
-            if (!gameManager.IsGamePaused)
+            EnsureDependencies();
+            if (!GameManager.IsGamePaused)
             {
                 gameManager.PauseGame();
-                playerInput.DeactivateInput();
             }
             else
             {
                 gameManager.ResumeGame();
-                playerInput.ActivateInput();
             }
         }
     }

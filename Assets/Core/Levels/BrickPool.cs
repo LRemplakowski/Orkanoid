@@ -9,6 +9,9 @@ namespace Orkanoid.Core
     [RequireComponent(typeof(Tagger))]
     public class BrickPool : MonoBehaviour
     {
+        [SerializeField]
+        private List<AbstractBrick> brickTemplates = new();
+
         public delegate void BrickTakenFromPoolHandler(IBrick brick);
         public static event BrickTakenFromPoolHandler BrickTakenFromPool;
 
@@ -17,23 +20,27 @@ namespace Orkanoid.Core
 
         private readonly Dictionary<string, List<IBrick>> brickPools = new();
 
+        private void Start()
+        {
+            brickTemplates.ForEach(template => brickPools.Add(template.GetBrickID(), new()));
+        }
+
         public IBrick GetBrickFromPool(IBrick template)
         {
-            IBrick brick;
+            IBrick brick = null;
             if (brickPools.TryGetValue(template.GetBrickID(), out List<IBrick> pool))
             {
                 brick = pool.Find(brick => brick != null);
                 if (brick != null)
                 {
                     brick.GetGameObject().SetActive(true);
+                    pool.Remove(brick);
                 }
                 else
                 {
                     brick = Instantiate(template.GetGameObject(), transform).GetComponent<IBrick>();
-                    pool.Add(brick);
                     brick.GetGameObject().SetActive(true);
                 }
-                pool.Remove(brick);
             }
             else
             {
@@ -44,7 +51,28 @@ namespace Orkanoid.Core
                 brickPools.Add(template.GetBrickID(), brickPool);
                 brickPool.Remove(brick);
             }
+            brick.ResetBrick();
             BrickTakenFromPool?.Invoke(brick);
+            return brick;
+        }
+
+        public IBrick GetBrickFromPool(string brickID)
+        {
+            IBrick brick = null;
+            if (brickPools.TryGetValue(brickID, out List<IBrick> pool))
+            {
+                brick = pool.Find(brick => brick != null);
+                if (brick != null)
+                {
+                    brick.GetGameObject().SetActive(true);
+                    pool.Remove(brick);
+                }
+                else
+                {
+                    brick = Instantiate(brickTemplates.Find(b => b.GetBrickID().Equals(brickID)), transform);
+                    brick.GetGameObject().SetActive(true);
+                }
+            }
             return brick;
         }
 

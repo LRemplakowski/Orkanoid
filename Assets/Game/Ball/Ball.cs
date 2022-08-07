@@ -18,13 +18,16 @@ namespace Orkanoid.Game
         private float launchVelocity = 1.0f;
         [SerializeField]
         private int defaultBallDamage = 1;
-        private static int currentBallDamage;
+        private static int _currentBallDamage;
+        public static int CurrentBallDamage { get => _currentBallDamage; }
 
         private delegate void BallResizeHandler();
         private static event BallResizeHandler BallResized;
 
-        private static Vector3 ballScale;
-        private static Vector3 originalScale;
+        private static Vector3 _currentBallScale;
+        public static Vector3 CurrentBallScale { get => _currentBallScale; }
+        private static Vector3 _originalBallScale;
+        public static Vector3 OriginalBallScale { get => _originalBallScale; }
 
         private void Awake()
         {
@@ -32,26 +35,41 @@ namespace Orkanoid.Game
                 myRigidbody = GetComponent<Rigidbody2D>();
             if (!audioSource)
                 audioSource = GetComponent<AudioSource>();
-            originalScale = transform.localScale;
-            ballScale = originalScale;
-            currentBallDamage = defaultBallDamage;
+            _originalBallScale = transform.localScale;
+            _currentBallScale = _originalBallScale;
+            _currentBallDamage = defaultBallDamage;
         }
 
         private void OnEnable()
         {
             GameManager.GameStarted += LaunchBall;
             BallResized += OnBallResized;
+            GameManager.GamePaused += OnGamePaused;
+            GameManager.GameResumed += OnGameResumed;
+            myRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         private void OnDisable()
         {
             GameManager.GameStarted -= LaunchBall;
             BallResized -= OnBallResized;
+            GameManager.GamePaused -= OnGamePaused;
+            GameManager.GameResumed -= OnGameResumed;
         }
 
         private void OnBallResized()
         {
-            transform.localScale = ballScale;
+            transform.localScale = _currentBallScale;
+        }
+
+        private void OnGamePaused()
+        {
+            myRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        private void OnGameResumed()
+        {
+            myRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         private void Start()
@@ -68,7 +86,7 @@ namespace Orkanoid.Game
 
         private void Update()
         {
-            if (!gameManager.HasGameStarted)
+            if (!GameManager.HasGameStarted)
                 transform.position = paddle.BallHookPointPosition;
         }
 
@@ -76,11 +94,12 @@ namespace Orkanoid.Game
         {
             if (collision.gameObject.TryGetComponent(out IBrick brick))
             {
-                brick.TakeHit(currentBallDamage);
+                brick.TakeHit(_currentBallDamage);
             }
-            if (gameManager.HasGameStarted)
+            if (GameManager.HasGameStarted)
             {
-                audioSource.Play();
+                if (!SoundController.MuteSounds)
+                    audioSource.Play();
                 Vector2 tweak = new(UnityEngine.Random.Range(-0.05f, 0.05f), UnityEngine.Random.Range(0f, 0.05f));
                 myRigidbody.velocity += tweak;
             }
@@ -98,26 +117,24 @@ namespace Orkanoid.Game
                 launchVector = Vector2.up + paddle.CurrentMovementVector;
             }
             launchVector.Normalize();
-            Debug.LogWarning("Launching ball with velocity " + (launchVector * launchVelocity).ToString());
             myRigidbody.velocity = launchVector * launchVelocity;
         }
 
         public static void ResizeBalls(float multiplier)
         {
-            ballScale *= multiplier;
+            _currentBallScale *= multiplier;
             BallResized?.Invoke();
         }
 
         public static void ResetBallSize()
         {
-            ballScale = originalScale;
+            _currentBallScale = _originalBallScale;
             BallResized?.Invoke();
         }
 
         public static void AdjustBallDamage(int modifier)
         {
-            currentBallDamage = Mathf.Clamp(currentBallDamage + modifier, 1, int.MaxValue);
-            Debug.Log("Adjusted ball damage: " + currentBallDamage);
+            _currentBallDamage = Mathf.Clamp(_currentBallDamage + modifier, 1, int.MaxValue);
         }
     }
 }

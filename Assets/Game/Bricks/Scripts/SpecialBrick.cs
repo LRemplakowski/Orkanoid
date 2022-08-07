@@ -1,3 +1,4 @@
+using Orkanoid.Core;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -27,7 +28,7 @@ namespace Orkanoid.Game
 
         protected override void OnHitTaken(IBrick brick)
         {
-            if (brickHit)
+            if (brickHit && !SoundController.MuteSounds)
                 AudioSource.PlayClipAtPoint(brickHit, brick.GetTransform().position, 1.0f);
         }
     }

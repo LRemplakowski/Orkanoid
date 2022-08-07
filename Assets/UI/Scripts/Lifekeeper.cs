@@ -8,15 +8,9 @@ namespace Orkanoid.UI
     public class Lifekeeper : MonoBehaviour
     {
         [SerializeField]
-        private TextMeshProUGUI text;
+        private GameObject heartParent;
         [SerializeField]
-        public GameObject heartParent;
-
-        private void Awake()
-        {
-            if (!text)
-                text = GetComponent<TextMeshProUGUI>();
-        }
+        private GameObject heartPrefab;
 
         private void OnEnable()
         {
@@ -30,7 +24,11 @@ namespace Orkanoid.UI
 
         private void OnLifeCountChanged(int currentLives)
         {
-            text.text = "Lives: " + currentLives;
+            heartParent.transform.DestroyChildren();
+            for (int i = 0; i < currentLives; i++)
+            {
+                Instantiate(heartPrefab, heartParent.transform);
+            }
         }
     }
 }

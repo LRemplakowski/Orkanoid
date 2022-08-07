@@ -10,6 +10,8 @@ namespace Orkanoid.Game
 
         int GetPointValue();
 
+        int GetHitsTaken();
+
         Transform GetTransform();
 
         GameObject GetGameObject();

@@ -1,5 +1,8 @@
+using Orkanoid.Core.Saves;
+using Orkanoid.Game;
 using Orkanoid.UI;
 using SunsetSystems.Utils;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,17 +13,41 @@ namespace Orkanoid.Core.Levels
     {
         [SerializeField]
         private LevelGenerator levelGenerator;
+        [SerializeField]
+        private BrickPool brickPool;
+        [SerializeField]
+        private BrickGrid brickGrid;
 
-        public async Task NextLevel(int seed)
+        internal async Task NextLevel(int seed)
         {
             EnsureDependencies();
             await levelGenerator.GenerateLevel(seed);
+        }
 
-            void EnsureDependencies()
+        internal void LoadSavedLevel(List<BrickData> savedBricks)
+        {
+            EnsureDependencies();
+            brickGrid.ReturnBricksToPool();
+            bool cachedSoundMuted = SoundController.MuteSounds;
+            SoundController.MuteSounds = true;
+            foreach (BrickData data in savedBricks)
             {
-                if (!levelGenerator)
-                    levelGenerator = this.FindFirstComponentWithTag<LevelGenerator>(TagConstants.LEVEL_GENERATOR);
+                IBrick brick = brickPool.GetBrickFromPool(data.TemplateID);
+                brickGrid.PlaceBrickInGrid(brick, (int)data.Position.x, (int)data.Position.y);
+                brick.TakeHit(data.HitsTaken);
+
             }
+            SoundController.MuteSounds = cachedSoundMuted;
+        }
+
+        private void EnsureDependencies()
+        {
+            if (!levelGenerator)
+                levelGenerator = this.FindFirstComponentWithTag<LevelGenerator>(TagConstants.LEVEL_GENERATOR);
+            if (!brickPool)
+                brickPool = this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL);
+            if (!brickGrid)
+                brickGrid = this.FindFirstComponentWithTag<BrickGrid>(TagConstants.BRICK_GRID);
         }
     }
 }

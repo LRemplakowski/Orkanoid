@@ -1,7 +1,6 @@
 using Orkanoid.Core;
 using Orkanoid.Core.Levels;
 using SunsetSystems.Utils;
-using System;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -93,6 +92,11 @@ namespace Orkanoid.Game
         public virtual int GetPointValue()
         {
             return maxHealth;
+        }
+
+        public virtual int GetHitsTaken()
+        {
+            return hitsTaken;
         }
 
         public virtual void TakeHit(int damage)

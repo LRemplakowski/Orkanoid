@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: enlargeBall
+  <BrickTemplate>k__BackingField: {fileID: 3455230205928549394}
   maxHealth: 1
   hitsTaken: 0
   spriteRenderer: {fileID: 3455230205928549404}
