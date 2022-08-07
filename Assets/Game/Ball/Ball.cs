@@ -29,6 +29,8 @@ namespace Orkanoid.Game
         private static Vector3 _originalBallScale;
         public static Vector3 OriginalBallScale { get => _originalBallScale; }
 
+        private Vector2 cachedBallVelocity;
+
         private void Awake()
         {
             if (!myRigidbody)
@@ -64,12 +66,14 @@ namespace Orkanoid.Game
 
         private void OnGamePaused()
         {
+            cachedBallVelocity = myRigidbody.velocity;
             myRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         private void OnGameResumed()
         {
             myRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            myRigidbody.velocity = cachedBallVelocity;
         }
 
         private void Start()
