@@ -34,7 +34,7 @@ namespace Orkanoid.Game
         private static readonly int powerUpRangeMax = 2;
         private static int _powerUpCounter = 0;
         public static int PowerUpCounter { get => _powerUpCounter; }
-        private static readonly float ballWidthAdjust = 0.2f;
+        private static readonly float ballWidthAdjust = 0.1f;
 
         private void Awake()
         {
