@@ -39,7 +39,7 @@ namespace Orkanoid.Game
         private static int _powerUpCounter = 0;
         public static int PowerUpCounter { get => _powerUpCounter; }
         [SerializeField, Range(0f, 1f)]
-        private float paddleWidthAdjust = 0.2f;
+        private float paddleWidthAdjust = 0.5f;
 
         private void Awake()
         {
