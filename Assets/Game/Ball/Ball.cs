@@ -109,7 +109,7 @@ namespace Orkanoid.Game
             {
                 if (!SoundController.MuteSounds)
                     audioSource.Play();
-                Vector2 tweak = new(UnityEngine.Random.Range(-0.05f, 0.05f), UnityEngine.Random.Range(-0.05f, 0.05f));
+                Vector2 tweak = new(UnityEngine.Random.Range(-0.05f, 0.05f), UnityEngine.Random.Range(-0.07f, 0.05f));
                 myRigidbody.velocity += tweak;
             }
         }
