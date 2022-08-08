@@ -66,9 +66,8 @@ namespace Orkanoid.Core.Saves
             data.levelID = GameManager.CurrentLevel;
             data.currentScore = GameManager.CurrentScore;
             data.currentLives = GameManager.CurrentLives;
-            data.ballDamage = Ball.CurrentBallDamage;
-            data.ballScale = Ball.CurrentBallScale.x / Ball.OriginalBallScale.x;
-            data.paddleScale = Paddle.CurrentPaddleScale.x / Paddle.OriginalPaddleScale.x;
+            data.ballPowerUp = Ball.PowerUpCounter;
+            data.paddlePowerUp = Paddle.PowerUpCounter;
             data.bricks = new();
             foreach (IBrick brick in BrickGrid.Grid)
             {
@@ -82,9 +81,9 @@ namespace Orkanoid.Core.Saves
     [Serializable]
     internal class SaveData
     {
-        public int levelID, currentScore, currentLives, ballDamage;
+        public int levelID, currentScore, currentLives;
         public List<BrickData> bricks;
-        public float ballScale, paddleScale;
+        public int ballPowerUp, paddlePowerUp;
     }
 
     [Serializable]

@@ -6,12 +6,25 @@ namespace Orkanoid.Game
     public class ResizePaddle : AbstractPowerUp
     {
         [SerializeField]
-        private float sizeMultiplier;
+        private PaddleAdjust paddleAdjust;
 
         public override void Apply()
         {
             Paddle paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
-            paddle.ResizePaddle(sizeMultiplier);
+            switch (paddleAdjust)
+            {
+                case PaddleAdjust.IncreaseWidth:
+                    paddle.IncreasePaddleWidth();
+                    break;
+                case PaddleAdjust.DecreaseWidth:
+                    paddle.DecreasePaddleWidth();
+                    break;
+            }
+        }
+
+        public enum PaddleAdjust
+        {
+            IncreaseWidth, DecreaseWidth
         }
     }
 }

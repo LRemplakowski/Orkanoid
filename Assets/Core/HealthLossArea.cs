@@ -18,6 +18,8 @@ namespace Orkanoid.Core
             if (collision.TryGetComponent(out Ball _))
             {
                 gameManager.LoseLife();
+                Ball.ResetBallSize();
+                Ball.AdjustBallDamage();
             }
         }
     }

@@ -16,8 +16,6 @@ namespace Orkanoid.Game
 
         [SerializeField]
         private float launchVelocity = 1.0f;
-        [SerializeField]
-        private int defaultBallDamage = 1;
         private static int _currentBallDamage;
         public static int CurrentBallDamage { get => _currentBallDamage; }
 
@@ -30,6 +28,13 @@ namespace Orkanoid.Game
         public static Vector3 OriginalBallScale { get => _originalBallScale; }
 
         private Vector2 cachedBallVelocity;
+
+        private static readonly int defaultBallDamage = 1;
+        private static readonly int powerUpRangeMin = -2;
+        private static readonly int powerUpRangeMax = 2;
+        private static int _powerUpCounter = 0;
+        public static int PowerUpCounter { get => _powerUpCounter; }
+        private static readonly float ballWidthAdjust = 0.2f;
 
         private void Awake()
         {
@@ -124,21 +129,41 @@ namespace Orkanoid.Game
             myRigidbody.velocity = launchVector * launchVelocity;
         }
 
-        public static void ResizeBalls(float multiplier)
+        public static void OverrideBallSize(int ballPowerUp)
         {
-            _currentBallScale *= multiplier;
+            _powerUpCounter = ballPowerUp;
+            _currentBallScale += new Vector3(PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust);
+            BallResized?.Invoke();
+        }
+
+        public static void IncreaseBallSize()
+        {
+            if (_powerUpCounter >= powerUpRangeMax)
+                return;
+            _powerUpCounter++;
+            _currentBallScale += new Vector3(PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust);
+            BallResized?.Invoke();
+        }
+
+        public static void DecreaseBallSize()
+        {
+            if (_powerUpCounter <= powerUpRangeMin)
+                return;
+            _powerUpCounter++;
+            _currentBallScale += new Vector3(PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust, PowerUpCounter * ballWidthAdjust);
             BallResized?.Invoke();
         }
 
         public static void ResetBallSize()
         {
             _currentBallScale = _originalBallScale;
+            _powerUpCounter = 0;
             BallResized?.Invoke();
         }
 
-        public static void AdjustBallDamage(int modifier)
+        public static void AdjustBallDamage()
         {
-            _currentBallDamage = Mathf.Clamp(_currentBallDamage + modifier, 1, int.MaxValue);
+            _currentBallDamage = Mathf.Clamp(defaultBallDamage + _powerUpCounter, 1, powerUpRangeMax);
         }
     }
 }

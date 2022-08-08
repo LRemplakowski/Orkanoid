@@ -34,6 +34,13 @@ namespace Orkanoid.Game
         private static Vector3 _originalPosition;
         public static Vector3 OriginalPosition { get => _originalPosition; }
 
+        [SerializeField]
+        private int powerUpRangeMin = -2, powerUpRangeMax = 2;
+        private static int _powerUpCounter = 0;
+        public static int PowerUpCounter { get => _powerUpCounter; }
+        [SerializeField, Range(0f, 1f)]
+        private float paddleWidthAdjust = 0.2f;
+
         private void Awake()
         {
             if (!myRigidbody)
@@ -83,9 +90,28 @@ namespace Orkanoid.Game
             return result;
         }
 
-        public void ResizePaddle(float sizeMultiplier)
+        public void OverridePaddleWidth(int powerUpCounter)
         {
-            _currentPaddleScale = new(transform.localScale.x * sizeMultiplier, transform.localScale.y, transform.localScale.z);
+            _powerUpCounter = powerUpCounter;
+            _currentPaddleScale = new(OriginalPaddleScale.x + (paddleWidthAdjust * _powerUpCounter), OriginalPaddleScale.y, OriginalPaddleScale.z);
+            transform.localScale = CurrentPaddleScale;
+        }
+
+        public void IncreasePaddleWidth()
+        {
+            if (_powerUpCounter >= powerUpRangeMax)
+                return;
+            _powerUpCounter++;
+            _currentPaddleScale = new(OriginalPaddleScale.x + (paddleWidthAdjust * _powerUpCounter), OriginalPaddleScale.y, OriginalPaddleScale.z);
+            transform.localScale = CurrentPaddleScale;
+        }
+
+        public void DecreasePaddleWidth()
+        {
+            if (_powerUpCounter <= powerUpRangeMin)
+                return;
+            _powerUpCounter--;
+            _currentPaddleScale = new(OriginalPaddleScale.x + (paddleWidthAdjust * _powerUpCounter), OriginalPaddleScale.y, OriginalPaddleScale.z);
             transform.localScale = CurrentPaddleScale;
         }
 
@@ -94,11 +120,7 @@ namespace Orkanoid.Game
             transform.localScale = _originalPaddleScale;
             transform.position = _originalPosition;
             ballHookPoint.transform.localPosition = originalHookPointPosition;
-        }
-
-        public void AdjustHookPointPosition(float positionMultiplier)
-        {
-            ballHookPoint.transform.localPosition *= positionMultiplier;
+            _powerUpCounter = 0;
         }
 
         private void OnDrawGizmos()

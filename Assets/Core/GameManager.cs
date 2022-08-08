@@ -121,7 +121,7 @@ namespace Orkanoid.Core
             Paddle paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
             paddle.ResetPaddle();
             Ball.ResetBallSize();
-            Ball.AdjustBallDamage(int.MinValue);
+            Ball.AdjustBallDamage();
         }
 
         public void StartGame()
@@ -232,9 +232,8 @@ namespace Orkanoid.Core
             void InjectBallData(SaveData savedData)
             {
                 Ball.ResetBallSize();
-                Ball.AdjustBallDamage(int.MinValue);
-                Ball.AdjustBallDamage(savedData.ballDamage);
-                Ball.ResizeBalls(savedData.ballScale);
+                Ball.OverrideBallSize(savedData.ballPowerUp);
+                Ball.AdjustBallDamage();
             }
 
             void SwitchUIToGame()
@@ -247,8 +246,7 @@ namespace Orkanoid.Core
             {
                 Paddle paddle = this.FindFirstComponentWithTag<Paddle>(TagConstants.PADDLE);
                 paddle.ResetPaddle();
-                paddle.AdjustHookPointPosition(savedData.ballScale);
-                paddle.ResizePaddle(savedData.paddleScale);
+                paddle.OverridePaddleWidth(savedData.paddlePowerUp);
             }
         }
 
