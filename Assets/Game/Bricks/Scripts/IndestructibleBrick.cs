@@ -9,19 +9,12 @@ namespace Orkanoid.Game
 
         public override void TakeHit(int damage)
         {
-
+            base.TakeHit(0);
         }
 
-        // This shouldn't ever be called for an indestructible brick, but we'll return it to the object pool just in case.
-        protected override void OnHealthBelowZero(IBrick brick)
-        {
-            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
-        }
-
-        // This shouldn't ever be called for an indestructible brick, but we'll return it to the object pool just in case.
         protected override void OnHitTaken(IBrick brick)
         {
-            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
+            // Do nothing, this brick shouldn't be destroyed with damage.
         }
     }
 }

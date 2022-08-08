@@ -101,12 +101,12 @@ namespace Orkanoid.Core
 
         private void OnEnable()
         {
-            AbstractBrick.AllBricksSmashed += OnAllBricksDestroyed;
+            BrickGrid.AllBricksDestroyed += OnAllBricksDestroyed;
         }
 
         private void OnDisable()
         {
-            AbstractBrick.AllBricksSmashed -= OnAllBricksDestroyed;
+            BrickGrid.AllBricksDestroyed -= OnAllBricksDestroyed;
         }
 
         public void ResetGame()
@@ -183,7 +183,7 @@ namespace Orkanoid.Core
 
         private async void OnAllBricksDestroyed()
         {
-            if (!IsGamePaused && CurrentLives > 0)
+            if (CurrentLives > 0)
                 await NextLevel();
         }
 

@@ -4,6 +4,8 @@ namespace Orkanoid.Game
 {
     public interface IBrick
     {
+        bool CountsTowardsWin { get; }
+
         void TakeHit(int damage);
 
         int GetHealthLeft();

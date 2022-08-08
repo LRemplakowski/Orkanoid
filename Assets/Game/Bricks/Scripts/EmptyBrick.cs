@@ -11,16 +11,10 @@ namespace Orkanoid.Game
 
         }
 
-        // This shouldn't ever be called for an empty brick, but we'll return it to the object pool just in case.
-        protected override void OnHealthBelowZero(IBrick brick)
-        {
-            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
-        }
-
-        // This shouldn't ever be called for an empty brick, but we'll return it to the object pool just in case.
+        // This shouldn't ever be called for an empty brick, but we'll remove it from grid just in case.
         protected override void OnHitTaken(IBrick brick)
         {
-            this.FindFirstComponentWithTag<BrickPool>(TagConstants.BRICK_POOL).ReturnToPool(brick);
+            brickGrid.RemoveBrickFromGrid(brick);
         }
 
         private void OnDrawGizmos()

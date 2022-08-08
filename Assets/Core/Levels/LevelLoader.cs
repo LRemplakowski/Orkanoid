@@ -21,6 +21,8 @@ namespace Orkanoid.Core.Levels
         internal async Task NextLevel(int seed)
         {
             EnsureDependencies();
+            brickGrid.ReturnBricksToPool();
+            BrickGrid.ResetBrickCounter();
             await levelGenerator.GenerateLevel(seed);
         }
 
@@ -28,6 +30,7 @@ namespace Orkanoid.Core.Levels
         {
             EnsureDependencies();
             brickGrid.ReturnBricksToPool();
+            BrickGrid.ResetBrickCounter();
             bool cachedSoundMuted = SoundController.MuteSounds;
             SoundController.MuteSounds = true;
             foreach (BrickData data in savedBricks)

@@ -10,7 +10,7 @@ namespace Orkanoid.Game
         [SerializeField]
         protected AbstractPowerUp powerUp;
 
-        protected override bool CountsTowardsWin => true;
+        public override bool CountsTowardsWin => true;
         public sealed override BrickType GetBrickType() => BrickType.Special;
 
         public override int GetPointValue()
@@ -23,7 +23,7 @@ namespace Orkanoid.Game
             AbstractPowerUp powerUpInstance = Instantiate(powerUp);
             powerUpInstance.transform.position = brick.GetTransform().position;
             gameManager.AddPoints(brick.GetPointValue());
-            brickPool.ReturnToPool(brick);
+            base.OnHealthBelowZero(brick);
         }
 
         protected override void OnHitTaken(IBrick brick)

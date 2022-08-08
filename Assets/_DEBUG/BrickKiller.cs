@@ -19,12 +19,7 @@ namespace Orkanoid.DebugHelper
         {
             Debug.Log("Bender would be proud!");
             BrickGrid grid = this.FindFirstComponentWithTag<BrickGrid>(TagConstants.BRICK_GRID);
-            IBrick brick = grid.GetRandomBrick();
-            while (brick != null)
-            {
-                brick.TakeHit(brick.GetHealthLeft() * 2);
-                brick = grid.GetRandomBrick();
-            }
+            grid.ReturnBricksToPool(true);
         }
     }
 }

@@ -29,12 +29,7 @@ namespace Orkanoid.Game
         public delegate void HitTakenHandler(AbstractBrick brick);
         public event HitTakenHandler HitTaken;
 
-        public delegate void AllBricksSmashedHandler();
-        public static event AllBricksSmashedHandler AllBricksSmashed;
-
-        protected virtual bool CountsTowardsWin => false;
-
-        public static int BrickCounter { get; private set; }
+        public virtual bool CountsTowardsWin => false;
 
         private Vector2Int gridPosition;
 
@@ -52,8 +47,6 @@ namespace Orkanoid.Game
         {
             BrickDestroyed += OnHealthBelowZero;
             HitTaken += OnHitTaken;
-            if (CountsTowardsWin)
-                BrickCounter++;
             if (!brickGrid)
                 brickGrid = this.FindFirstComponentWithTag<BrickGrid>(TagConstants.BRICK_GRID);
             if (!brickPool)
@@ -64,24 +57,12 @@ namespace Orkanoid.Game
         {
             BrickDestroyed -= OnHealthBelowZero;
             HitTaken -= OnHitTaken;
-            if (CountsTowardsWin)
-            {
-                BrickCounter--;
-                if (BrickCounter <= 0)
-                    AllBricksSmashed?.Invoke();
-            }
-            brickGrid.RemoveBrickFromGrid(gridPosition.x, gridPosition.y);
         }
 
         protected virtual void Start()
         {
             if (!gameManager)
                 gameManager = this.FindFirstComponentWithTag<GameManager>(TagConstants.GAME_MANAGER);
-        }
-
-        public static void ResetBrickCounter()
-        {
-            BrickCounter = 0;
         }
 
         public virtual int GetHealthLeft()
@@ -113,13 +94,17 @@ namespace Orkanoid.Game
 
         public abstract BrickType GetBrickType();
 
-        protected abstract void OnHealthBelowZero(IBrick brick);
+        protected virtual void OnHealthBelowZero(IBrick brick)
+        {
+            brickGrid.RemoveBrickFromGrid(brick);
+        }
 
         protected abstract void OnHitTaken(IBrick brick);
 
         public virtual void ResetBrick()
         {
             hitsTaken = 0;
+            gridPosition = new(-1, -1);
         }
 
         public string GetBrickID() => ID;

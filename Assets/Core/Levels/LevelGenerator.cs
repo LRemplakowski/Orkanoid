@@ -39,8 +39,6 @@ namespace Orkanoid.Core.Levels
             EnsureDependencies();
             width = brickGrid.GridWidth;
             height = brickGrid.GridHeight;
-            brickGrid.ReturnBricksToPool();
-            AbstractBrick.ResetBrickCounter();
             bool[][] levelPattern = new bool[height][];
             System.Random random = new(seed);
             await Task.Run(async () =>

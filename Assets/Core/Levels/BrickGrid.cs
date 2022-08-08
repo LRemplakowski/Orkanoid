@@ -21,6 +21,11 @@ namespace Orkanoid.Core.Levels
         [SerializeField]
         private Grid myGridComponent;
 
+        public delegate void AllBricksDestroyedHandler();
+        public static event AllBricksDestroyedHandler AllBricksDestroyed;
+
+        public static int BrickCounter { get; private set; }
+
         private void Awake()
         {
             _grid = new IBrick[_gridSizeX, _gridSizeY];
@@ -47,14 +52,18 @@ namespace Orkanoid.Core.Levels
             }
         }
 
-        public void ReturnBricksToPool()
+        public static void ResetBrickCounter()
+        {
+            BrickCounter = 0;
+        }
+
+        public void ReturnBricksToPool(bool invokeEvents = false)
         {
             foreach (IBrick brick in _grid)
             {
                 if (brick != null)
                 {
-                    brickPool.ReturnToPool(brick);
-                    RemoveBrickFromGrid(brick.GetGridPosition().x, brick.GetGridPosition().y);
+                    RemoveBrickFromGrid(brick, invokeEvents);
                 }
             }
         }
@@ -88,17 +97,43 @@ namespace Orkanoid.Core.Levels
                 Vector3 localPosition = myGridComponent.GetCellCenterLocal(new Vector3Int(x, y));
                 localPosition.z = -5;
                 brick.GetTransform().localPosition = localPosition;
+                if (brick.CountsTowardsWin)
+                    BrickCounter++;
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (IndexOutOfRangeException e)
             {
                 Debug.LogException(e);
                 brickPool.ReturnToPool(brick);
             }
         }
 
-        public void RemoveBrickFromGrid(int x, int y)
+        public void RemoveBrickFromGrid(IBrick brick, bool invokeEvents = true)
         {
-            _grid[x, y] = null;
+            Vector2Int brickPosition = brick.GetGridPosition();
+            try
+            {
+                IBrick brickAtPosition = _grid[brickPosition.x, brickPosition.y];
+                if (_grid[brickPosition.x, brickPosition.y].Equals(brick))
+                {
+                    _grid[brickPosition.x, brickPosition.y] = null;
+                    brickPool.ReturnToPool(brick);
+                    if (brick.CountsTowardsWin)
+                    {
+                        BrickCounter--;
+                        if (invokeEvents && BrickCounter <= 0)
+                            AllBricksDestroyed?.Invoke();
+                    }
+                }
+                else
+                {
+                    brickPool.ReturnToPool(brick);
+                }
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Debug.LogException(e);
+                brickPool.ReturnToPool(brick);
+            }
         }
     }
 }

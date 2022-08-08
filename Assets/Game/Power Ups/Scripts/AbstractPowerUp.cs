@@ -1,7 +1,5 @@
 using Orkanoid.Core;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Orkanoid.Core.Levels;
 using UnityEngine;
 
 namespace Orkanoid.Game
@@ -21,12 +19,12 @@ namespace Orkanoid.Game
 
         private void OnEnable()
         {
-            AbstractBrick.AllBricksSmashed += KillMe;
+            BrickGrid.AllBricksDestroyed += KillMe;
         }
 
         private void OnDisable()
         {
-            AbstractBrick.AllBricksSmashed -= KillMe;
+            BrickGrid.AllBricksDestroyed -= KillMe;
         }
 
         private void KillMe()
